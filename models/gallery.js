@@ -18,9 +18,9 @@ Gallery.prototype.save = function (callback){
 	var time = {
 		date: date,
 		year: date.getFullYear(),
-		month: date.getFullYear() + "-" + (date.getMonth() + 1),
-		day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
-    	minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+		month: date.getFullYear() + "年" + (date.getMonth() + 1),
+		day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
+    	minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
 	};
 	//要存入数据库的文档
 	var gallery = {
@@ -84,9 +84,11 @@ Gallery.getOne = function(gid, callback){
 						mongodb.close();
 						if(err) return callback(err);
 					});
+
 					marked(doc.content, function (err, content){
 						if(err) return console.log(err);
 						doc.content = content;
+						doc.title = doc.content.replace(/<\/?.+?>/g,"");
 					});
 					doc.comments.forEach(function (comment){
 						marked(comment.content, function (err, content){
@@ -178,7 +180,29 @@ Gallery.edit = function (gid, callback) {
 };
 
 
-
+Gallery.update = function (gid, url, content, time, callback) {
+	mongodb.open(function (err, db) {
+		if(err){
+			mongodb.close();
+			return callback(err);
+		}
+		db.collection('gallerys', function (err, collection) {
+			if(err){
+				mongodb.close();
+				return callback(err);
+			}
+			collection.update({'gid': gid}, {$set: {
+				url: url,
+				content: content,
+				time: time
+			}}, function (err) {
+				mongodb.close();
+				if(err) return callback(err);
+				callback(null);
+			});
+		});
+	});
+}
 
 
 

@@ -50,6 +50,28 @@ module.exports = function(app){
 		});
 	});
 
+	app.get('/emotion/:eid', function (req, res, next) {
+		var eid = parseInt(req.params.eid);
+		Emotion.getOne(eid, function (err, emotion) {
+			if (err){
+				req.flash('error', "读取心情错误!");
+				return res.redirect('/404');
+			}
+			if (!emotion){
+				req.flash('error', "找不到这篇心情!");
+				return res.redirect('/404');
+			}
+			res.render("emotions", {
+				title: emotion.title,
+				site: site,
+				user: req.session.user,
+				emotion: emotion,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
+
 	app.get('/post/:pid', function (req, res, next) {
 		var pid = parseInt(req.params.pid);
 		Post.getOne(pid, function (err, post) {
@@ -57,7 +79,6 @@ module.exports = function(app){
 				req.flash('error', "读取文章错误!");
 				return res.redirect('/404');
 			}
-
 			if (!post){
 				req.flash('error', "找不到这篇文章!");
 				return res.redirect('/404');
@@ -67,6 +88,28 @@ module.exports = function(app){
 				site: site,
 				user: req.session.user,
 				post: post,
+				success: req.flash('success').toString(),
+				error: req.flash('error').toString()
+			});
+		});
+	});
+
+	app.get('/gallery/:gid', function (req, res, next) {
+		var gid = parseInt(req.params.gid);
+		Gallery.getOne(gid, function (err, gallery) {
+			if (err){
+				req.flash('error', "读取文章错误!");
+				return res.redirect('/404');
+			}
+			if (!gallery){
+				req.flash('error', "找不到这篇文章!");
+				return res.redirect('/404');
+			}
+			res.render("posts", {
+				title: gallery.title,
+				site: site,
+				user: req.session.user,
+				gallery: gallery,
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()
 			});

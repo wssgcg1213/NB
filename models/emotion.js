@@ -1,9 +1,9 @@
 /**
  * emotion (心情)模型
+ * 这里不用markdown
  */
 
 var mongodb = require('./db');
-var marked = require('marked');
 
 function Emotion(content) {
 	this.content = content;
@@ -108,12 +108,16 @@ Emotion.getOne = function (eid, callback) {
 				mongodb.close();
 				return callback(err);
 			}
-			collection.findOne({'pid': pid}, function (err, doc) {
+			collection.findOne({'eid': eid}, function (err, doc) {
 				if(err){
 					mongodb.close();
 					return callback(err);
 				}
 				if(doc){
+					collection.update({'eid': eid}, {$inc: {'pv': 1}}, function (err){  //pv++
+						mongodb.close();
+						if(err) return callback(err);
+					});
 					callback(null, doc);
 				}else{
 					callback(null, null);
