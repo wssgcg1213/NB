@@ -38,9 +38,19 @@
         <a href="/" title="View the Site">View the Site</a> | <a href="/admin/logout" title="Sign Out">Sign Out</a> </div>
       <ul id="main-nav">
         <!-- Accordion Menu -->
-        <li> <a href="/admin" class="nav-top-item no-submenu current">
+        <li> <a href="/admin" class="nav-top-item no-submenu">
           <!-- Add the class "no-submenu" to menu items with no sub menu -->
           Dashboard </a> </li>
+        <li> <a href="#" class="nav-top-item">
+          <!-- Add the class "current" to current menu item -->
+          Emotions </a>
+          <ul>
+            <li><a href="/admin/emotions">Write a new Emotion</a></li>
+            <li><a href="#">Manage Emotions</a></li>
+            <!-- Add class "current" to sub menu items also -->
+            <li><a href="#">Manage Comments</a></li>
+          </ul>
+        </li>
         <li> <a href="#" class="nav-top-item">
           <!-- Add the class "current" to current menu item -->
           Posts </a>
@@ -100,11 +110,13 @@
     <% } %>
 
     <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="/admin/emotions"><span> <img src="/admin/images/icons/pencil_48.png" alt="icon" /><br />
+        Write Emotion </span></a></li>
       <li><a class="shortcut-button" href="/admin/posts"><span> <img src="/admin/images/icons/pencil_48.png" alt="icon" /><br />
-        Write an Post </span></a></li>
-      <li><a class="shortcut-button" href="#"><span> <img src="/admin/images/icons/paper_content_pencil_48.png" alt="icon" /><br />
+        Write a Post </span></a></li>
+      <li><a class="shortcut-button" href="/admin/page"><span> <img src="/admin/images/icons/paper_content_pencil_48.png" alt="icon" /><br />
         Create a Page </span></a></li>
-      <li><a class="shortcut-button" href="#"><span> <img src="/admin/images/icons/image_add_48.png" alt="icon" /><br />
+      <li><a class="shortcut-button" href="/admin/galleries"><span> <img src="/admin/images/icons/image_add_48.png" alt="icon" /><br />
         Upload an Image </span></a></li>
     </ul>
     <!-- End .shortcut-buttons-set -->

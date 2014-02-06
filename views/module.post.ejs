@@ -3,38 +3,18 @@
 		<em class="format-ico post-ico">文章</em>
 		<div class="format-content">
 			<ul class="post-content">
-				<li class="post-cell">
-					<a href="##" rel="点击阅读 这会传染的"><p>这会传染的</p></a>
-					<h3><a href="##">情绪难以控制</a></h3>
-					<div class="post-info">
-						<sapn class="post-date">2014年01月31日</sapn>
-						<span class="post-view">点击: 1次</span>
-					</div>
-				</li>
-				<li class="post-cell">
-					<a href="##" rel="点击阅读 这会传染的"><p>这会传染的</p></a>
-					<h3><a href="##">刚回家就要订回去...</a></h3>
-					<div class="post-info">
-						<sapn class="post-date">2014年01月31日</sapn>
-						<span class="post-view">点击: 1次</span>
-					</div>
-				</li>
-				<li class="post-cell">
-					<a href="##" rel="点击阅读 这会传染的"><p>这会传染的</p></a>
-					<h3><a href="##">情绪难以控制</a></h3>
-					<div class="post-info">
-						<sapn class="post-date">2014年01月31日</sapn>
-						<span class="post-view">点击: 1次</span>
-					</div>
-				</li>
-				<li class="post-cell">
-					<a href="##" rel="点击阅读 这会传染的"><p>这会传染的</p></a>
-					<h3><a href="##">情绪难以控制</a></h3>
-					<div class="post-info">
-						<sapn class="post-date">2014年01月31日</sapn>
-						<span class="post-view">点击: 1次</span>
-					</div>
-				</li>
+				<% for(var i = 0; i<posts.length; i++){ %>
+					<li class="post-cell">
+						<a href="post/<%= posts[i].pid %>" rel="点击阅读 <%= posts[i].title %>" title="<%= posts[i].title %>">
+							<p><%- posts[i].content %></p>
+						</a>
+						<h3><a href="post/<%= posts[i].pid %>" title="<%= posts[i].title %>"><%= posts[i].titlesub %></a></h3>
+						<div class="post-info">
+							<sapn class="post-date"><%= posts[i].time.day %></sapn>
+							<span class="post-view">点击: <%= posts[i].pv %>次</span>
+						</div>
+					</li>
+				<% } %>
 			</ul>
 		</div>
 		

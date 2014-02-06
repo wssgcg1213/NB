@@ -3,11 +3,12 @@
 		<em class="format-ico emotion-ico">心情</em>
 		<div class="format-content">
 			<ul class="emotion-content">
-				<li class="emotion-cell"><a href="##">情绪难以控制情绪难以控制情绪难以控制情绪难以控制情绪难以控制情绪难以控制情绪难以控制情绪难以控制!</a><i>2014/01/31</i></li>
-				<li class="emotion-cell"><a href="##">刚回家就要订回去的......</a><i>2014/01/31</i></li>
-				<li class="emotion-cell"><a href="##">寒假生活好快啊TvTL......</a><i>2014/01/31</i></li>
-				<li class="emotion-cell"><a href="##">寒假生活好快啊TvTL......</a><i>2014/01/31</i></li>
-				<li class="emotion-cell"><a href="##">寒假生活好快啊TvTL......</a><i>2014/01/31</i></li>
+				<% for(var i = 0; i<emotions.length; i++){ %>
+					<li class="emotion-cell">
+						<a href="emotion/<%= emotions[i].eid %>"><%= emotions[i].content %></a>
+						<i><%= emotions[i].time.minute %></i>
+					</li>
+				<% } %>
 			</ul>
 		</div>
 	</div>
