@@ -120,6 +120,7 @@ Emotion.getOne = function (eid, callback) {
 					});
 					callback(null, doc);
 				}else{
+                    mongodb.close();
 					callback(null, null);
 				}
 			});
