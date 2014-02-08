@@ -237,9 +237,31 @@ Post.update = function (pid, title, tags, content, time, callback) {
 	});
 };
 
-
-
-
+Post.saveComment = function (pid, email, name, url, callback){
+    mongodb.open(function (err, db) {
+        if(err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('posts', function (err, collection) {
+            if (err){
+                mongodb.clsoe();
+                return callback(err);
+            }
+            collection.update({'pid': pid}, {$push: {
+                comments: {
+                    name: name,
+                    email: email,
+                    url: url
+                }
+            }}, function (err) {
+                mongodb.close();
+                if (err) return callback(err);
+                callback(null);
+            })
+        });
+    });
+};
 
 
 
