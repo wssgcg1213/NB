@@ -26,12 +26,12 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({
-	secret: settings.cookieSecret,
-	key: settings.db,
-	cookie: {maxAge: 1000 * 3600 * 24 * 7},
-	store: new MongoStore({
-		db: settings.db
-	})
+    secret: settings.cookieSecret,
+    key: settings.db,
+    cookie: {maxAge: 1000 * 3600 * 24 * 7},
+    store: new MongoStore({
+        db: settings.db
+    })
 }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));

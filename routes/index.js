@@ -1,4 +1,3 @@
- 
 /*
  * Routes
  */
@@ -12,14 +11,14 @@ var Link = require('../models/link.js');
 var site = require('../siteSettings.js');
 
 module.exports = function(app){
-	//主页
-	app.get('/', function(req, res){
-		Emotion.get(site.indexEmotionAmount, function (err, emotions) {
-			if (err) {
-				req.flash('error', "主页心情读取错误!");
-				return res.redirect('/404');
-			}
-			Post.get(site.indexPostAmount, function (err, posts) {
+    //主页
+    app.get('/', function(req, res){
+        Emotion.get(site.indexEmotionAmount, function (err, emotions) {
+            if (err) {
+                req.flash('error', "主页心情读取错误!");
+                return res.redirect('/404');
+            }
+            Post.get(site.indexPostAmount, function (err, posts) {
 				if (err) {
 					req.flash('error', "主页文章读取错误!");
 					return res.redirect('/404');

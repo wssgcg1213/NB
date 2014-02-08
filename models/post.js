@@ -25,6 +25,10 @@ String.prototype.sub = function(n) {
 
 
 
+
+
+
+
 function Post(title, tags, content) {
 	this.title = title;
 	this.content = content;
@@ -56,20 +60,20 @@ Post.prototype.save = function (callback){
 	mongodb.open(function (err, db){
 		if(err) return callback(err);
 		//读
-		db.collection('posts', function (err, collection){
+        mongodb.collection('posts', function (err, collection){
 			if(err){
-				mongodb.close();
+                mongodb.close();
 				return callback(err);
 			}
 			collection.count({}, function (err, count){
 				if(err){
-					mongodb.close();
+                    mongodb.close();
 					return callback(err);
 				}
 				//插
 				post.pid = count + 1;
 				collection.insert(post, {safe: true}, function (err){
-					mongodb.close();
+					db.close();
 					if(err) return callback(err);
 					callback(null);
 				});
@@ -87,23 +91,24 @@ Post.prototype.save = function (callback){
  */
 Post.getOne = function(pid, callback){
 	mongodb.open(function (err, db){
+        mongodb.close = db.close;
 		if(err){
 			mongodb.close();
 			return callback(err);
 		}
 		db.collection('posts', function (err, collection){
 			if (err){
-				mongodb.close();
+                mongodb.close();
 				return callback(err);
 			}
 			collection.findOne({'pid': pid}, function (err, doc){
 				if(err){
-					mongodb.close();
+                    mongodb.close();
 					return callback(err);
 				}
 				if(doc){
 					collection.update({'pid': pid}, {$inc: {'pv': 1}}, function (err){  //pv++
-						mongodb.close();
+                        mongodb.close();
 						if(err) return callback(err);
 					});
 					marked(doc.content, function (err, content){
@@ -111,7 +116,7 @@ Post.getOne = function(pid, callback){
 						doc.content = content;
 					});
 					doc.comments.forEach(function (comment){
-						marked(comment.content, function (err, content){
+                        mongodb(comment.content, function (err, content){
 							if(err) return console.log(err);
 							comment.content = content;
 						});

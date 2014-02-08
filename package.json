@@ -1,13 +1,14 @@
 {
   "name": "NB",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
+    "node": "0.10.22",
     "express": "3.4.8",
-    "ejs": "*",
+    "ejs": "0.8.5",
     "mongodb": "*",
     "connect-mongo": "*",
     "connect-flash": "*"
