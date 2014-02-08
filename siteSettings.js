@@ -4,8 +4,8 @@
  */
 var site = {
 	author: "wssgcg1213",
-	title: "The Good Parts II",
-	subtitle: "B1ackRainFlake",
+	title: "Zero's CorNer",
+	subtitle: "ZeroLing",
 	indexEmotionAmount: 5,
 		//主页显示的Emotion数量,etc
 	indexPostAmount: 3,
