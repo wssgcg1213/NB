@@ -6,9 +6,9 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "node": "0.10.22",
-    "express": "3.4.8",
-    "ejs": "0.8.5",
+    "node": "*",
+    "express": "*",
+    "ejs": "*",
     "mongodb": "*",
     "connect-mongo": "*",
     "connect-flash": "*"

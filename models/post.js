@@ -116,7 +116,7 @@ Post.getOne = function(pid, callback){
 						doc.content = content;
 					});
 					doc.comments.forEach(function (comment){
-                        mongodb(comment.content, function (err, content){
+                        marked(comment.content, function (err, content){
 							if(err) return console.log(err);
 							comment.content = content;
 						});
