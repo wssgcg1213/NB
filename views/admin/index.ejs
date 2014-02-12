@@ -20,8 +20,8 @@
                 <th>
                   <input class="check-all" type="checkbox" />
                 </th>
-                <th>Post</th>
-                <th>User</th>
+                <th>PID</th>
+                <th>Title</th>
                 <th>Comment</th>
                 <th>Time</th>
                 <th>Edit</th>
@@ -52,23 +52,22 @@
             </tfoot>
             <tbody>
 
-
+              <% for(var i = 0; i<posts.length; i++){ %>
               <tr>
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>XXXXXX</td>
-                <td><a href="#" title="title">YYYYYYYYY</a></td>
-                <td>ZZZZZZZZZZZ</td>
-                <td>TTTTTTTTTT</td>
+                <td><%= i+1 %></td>
+                <td><a href="/admin/post-edit/<%= i+1 %>" title="title"><%= posts[i].title %></a></td>
+                <td><%= posts[i].comments.length %></td>
+                <td><%= posts[i].time.minute %></td>
                 <td>
                   <!-- Icons -->
-                  <a href="#" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a> 
-                  <a href="#" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a> 
-                  <a href="#" title="Edit Meta"><img src="/admin/images/icons/hammer_screwdriver.png" alt="Edit Meta" /></a> 
+                  <a href="/admin/post-edit/<%= i+1 %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
+                  <a href="/admin/post-del/<%= i+1 %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
                 </td>
               </tr>
-
+              <% } %>
 
             </tbody>
           </table>

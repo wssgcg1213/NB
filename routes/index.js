@@ -191,12 +191,42 @@ module.exports = function(app){
 				error: req.flash('error').toString()
 			});			
 		}else{
-			res.render('admin/index', {
-				site: site,
-				user: req.session.user,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});
+            Emotion.get(0, function (err, emotions) {
+                if (err) {
+                    req.flash('error', "主页心情读取错误!");
+                    return res.redirect('/404');
+                }
+                Post.get(0, function (err, posts) {
+                    if (err) {
+                        req.flash('error', "主页文章读取错误!");
+                        return res.redirect('/404');
+                    }
+                    Gallery.get(0, function (err, galleries) {
+                        if (err) {
+                            req.flash('error', "主页相册读取错误!");
+                            return res.redirect('/404');
+                        }
+                        Link.get(0, function (err, links) {
+                            if (err) {
+                                req.flash('error', "主页友链读取错误!");
+                                return res.redirect('/404');
+                            }
+                            posts = posts.reverse();
+                            res.render('admin/index', {
+                                title: site.title,
+                                site: site,
+                                user: req.session.user,
+                                emotions: emotions,
+                                posts: posts,
+                                galleries: galleries,
+                                links: links,
+                                success: req.flash('success').toString(),
+                                error: req.flash('error').toString()
+                            });
+                        });
+                    });
+                });
+            });
 		}
 	});
 
@@ -285,6 +315,41 @@ module.exports = function(app){
 				res.redirect('/admin');//发表成功
 			});
 	});
+
+    app.get('/admin/post-edit/:pid', preCheckLogin);
+    app.get('/admin/post-edit/:pid', function (req, res) {
+        var pid = parseInt(req.params.pid);
+        Post.edit(pid, function (err, post) {
+            if(err || !post){
+                req.flash('error', "读取文章错误!");
+                res.redirect('/admin');
+            }
+            post.tags = post.tags.join(",");
+            res.render('admin/post-edit', {
+                site: site,
+                post: post,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+
+    app.post('/admin/post-edit/:pid', preCheckLogin);
+    app.post('/admin/post-edit/:pid', function (req, res) {
+        var pid = parseInt(req.params.pid),
+            title = req.body.title,
+            tags = req.body.tags.split(",") ? req.body.tags.split(",") : req.body.tags.split("|"),
+            content = req.body.content;
+        Post.update(pid, title, tags, content, function (err, post){
+            if(err){
+                req.flash('error', "update错误");
+                return res.redirect('/admin');
+            }
+            req.flash('success', '修改成功!');
+            res.redirect('/admin');//修改成功
+        });
+    });
 
 	app.get('/admin/emotions', preCheckLogin);
 	app.get('/admin/emotions', function (req, res) {

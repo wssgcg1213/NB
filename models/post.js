@@ -196,6 +196,7 @@ Post.edit = function (pid, callback) {
 					mongodb.close();
 					return callback(err);
 				}
+                mongodb.close();
 				if(doc){
 					callback(null, doc);
 				}else{
@@ -215,7 +216,7 @@ Post.edit = function (pid, callback) {
  * @param  {[Date]}   time     [发布时间]
  * @param  {Function} callback [回调函数]
  */
-Post.update = function (pid, title, tags, content, time, callback) {
+Post.update = function (pid, title, tags, content, callback) {
 	mongodb.open(function (err, db) {
 		if(err){
 			mongodb.close();
@@ -227,14 +228,13 @@ Post.update = function (pid, title, tags, content, time, callback) {
 				return callback(err);
 			}
 			collection.update({'pid': pid}, {$set: {
-				title: title,
-				tags: tags,
-				content: content,
-				time: time
-			}}, function (err) {
+                title: title,
+                tags: tags,
+                content: content
+            }}, function (err, post) {
 				mongodb.close();
 				if(err) return callback(err);
-				callback(null);
+				callback(null, post);
 			});
 		});
 	});
