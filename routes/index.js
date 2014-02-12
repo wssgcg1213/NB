@@ -80,19 +80,19 @@ module.exports = function(app){
         Emotion.saveComment(eid, email, name, url, content, function(err){
             if(!eid){
                 req.flash('error', "内部错误!");
-                return res.redirect('/post/' + pid);
+                return res.redirect('/emotion/' + eid);
             }
             if(!email){
                 req.flash('error', "请检查Email!");
-                return res.redirect('/post/' + pid);
+                return res.redirect('/emotion/' + eid);
             }
             if(!name){
                 req.flash('error', "请检查昵称!");
-                return res.redirect('/post/' + pid);
+                return res.redirect('/emotion/' + eid);
             }
             if(!content){
                 req.flash('error', "请检查内容!");
-                return res.redirect('/post/' + pid);
+                return res.redirect('/emotion/' + eid);
             }
             if(err){
                 req.flash('error', "回复错误!");
