@@ -5,29 +5,37 @@
 			<div class="comment-content">
                 <div class="comment-respond">
                     <form method="POST">
-                        <textarea name="comment-content" cols="30" rows="10" placeholder="写点什么把..."></textarea>
+                        <textarea name="content" onclick="document.getElementById('click-show').style.height='150px'" cols="30" rows="10" placeholder="写点什么把..."></textarea>
                         <div id="click-show">
                             <div>
-                                <input class="comment-name" type="text" name="comment-name" placeholder="昵称"/>
+                                <input class="comment-name" type="text" name="name" placeholder="昵称"/>
                                 <label>昵称<span class="red">*</span></label>
                             </div>
                             <div>
-                                <input class="comment-email" type="text" name="comment-email" placeholder="邮箱"/>
+                                <input class="comment-email" type="text" name="email" placeholder="邮箱"/>
                                 <label>邮箱<span class="red">*</span></label>
                             </div>
                             <div>
-                                <input class="comment-url" type="text" name="comment-url" placeholder="网址"/>
+                                <input class="comment-url" type="text" name="url" placeholder="网址"/>
                                 <label>网址</label>
                             </div>
                         </div>
+                        <a class="btn" id="submit" href="##" onclick="document.getElementsByTagName('form')[0].submit()">提交!</a>
+
                     </form>
                 </div>
                  <ol class="comment-list">
-                     <li class="comment-cell">1</li>
-                     <li class="comment-cell">2</li>
-                     <li class="comment-cell">3</li>
-                     <li class="comment-cell">4</li>
-
+                     <% for(var j = 0; j<comments.length; j++){ %>
+                     <li class="comment-cell" id="div-comment">
+                         <div class="comment-author">
+                             <img src="http://ruby-china.org/avatar/" class="avatar">
+                             <strong><%= comments[j].name %></strong> :
+                             <span class="datetime"><%= comments[j].time.minute %></span>
+                         </div>
+                         <p><%- comments[j].content %></p>
+                         <div class="clear"></div>
+                     </li>
+                     <% } %>
                  </ol>
 			</div>
 		</div>

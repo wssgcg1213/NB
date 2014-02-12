@@ -22,7 +22,17 @@ String.prototype.sub = function(n) {
 	} return this;
 };
 
-
+function getTime() {
+    var date = new Date();
+    var time = {
+        date: date,
+        year: date.getFullYear(),
+        month: date.getFullYear() + "年" + (date.getMonth() + 1),
+        day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
+        minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+    };
+    return time;
+}
 
 
 
@@ -38,15 +48,8 @@ function Post(title, tags, content) {
 module.exports = Post;
 
 Post.prototype.save = function (callback){
-	var date = new Date();
 
-	var time = {
-		date: date,
-		year: date.getFullYear(),
-		month: date.getFullYear() + "年" + (date.getMonth() + 1),
-		day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
-    	minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-	};
+	var time = getTime();
 	//要存入数据库的文档
 	var post = {
 		title: this.title,
@@ -237,7 +240,8 @@ Post.update = function (pid, title, tags, content, time, callback) {
 	});
 };
 
-Post.saveComment = function (pid, email, name, url, callback){
+Post.saveComment = function (pid, email, name, url, content, callback){
+    var time = getTime();
     mongodb.open(function (err, db) {
         if(err){
             mongodb.close();
@@ -245,14 +249,16 @@ Post.saveComment = function (pid, email, name, url, callback){
         }
         db.collection('posts', function (err, collection) {
             if (err){
-                mongodb.clsoe();
+                mongodb.close();
                 return callback(err);
             }
             collection.update({'pid': pid}, {$push: {
                 comments: {
                     name: name,
                     email: email,
-                    url: url
+                    url: url,
+                    content: content,
+                    time: time
                 }
             }}, function (err) {
                 mongodb.close();

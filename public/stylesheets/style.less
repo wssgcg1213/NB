@@ -18,6 +18,25 @@ a{
 li{
 	list-style: none;
 }
+.clear{
+	clear: both;
+}
+.red{
+	color: red;
+}
+.btn{
+	position: relative;
+	height: 35px;
+	width: 70px;
+	background-color: rgb(82,168,236);
+	background-color: rgba(82,168,236,0.8);
+	display: block;
+	line-height: 35px;
+	color: #FFF;
+	border-radius: 4px;
+	font-size: 15px;
+	text-align: center;
+}
 .box-shadow{
 	-webkit-transition: box-shadow 200ms;
 	-moz-webkit-transition: box-shadow 200ms;
@@ -252,6 +271,56 @@ li{
 					-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 					-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 					box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+				}
+			}
+			#click-show{
+				overflow: hidden;
+				position: relative;
+				height: 0;
+				-webkit-transition: height ease 0.3s;
+				-moz-transition: height ease 0.3s;
+				-ms-transition: height ease 0.3s;
+				-o-transition: height ease 0.3s;
+				transition: height ease 0.3s;
+				label{
+					color: #FFF;
+					font-size: 15px;
+				}
+			}
+		}
+		.comment-list{
+			margin: 40px 0;
+			width: 100%;
+			overflow: hidden;
+			.comment-cell{
+				min-height: 120px;
+				padding: 10px 0;
+				.comment-author{
+					height: 40px;
+					color: #FFF;
+					font-size: 10px;
+					.avatar{
+    					height: 56px;
+    					width: 56px;
+    					position: absolute;
+    					z-index: 1;
+					}
+					strong{
+						font-size: 25px;
+						padding-left: 75px;
+					}
+					.datetime{
+						overflow: hidden;
+						outline: none;
+					}
+				}
+				p{
+					padding: 15px 115px;
+					font-size: 15px;
+					line-height: 1.8em;
+					color: #FFF;
+					width: 70%;
+					max-width: 600px;
 				}
 			}
 		}

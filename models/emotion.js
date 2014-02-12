@@ -5,6 +5,19 @@
 
 var mongodb = require('./db');
 
+function getTime(){
+    var date = new Date();
+    var time = {
+        date: date,
+        year: date.getFullYear(),
+        month: date.getFullYear() + "年" + (date.getMonth() + 1) + "月",
+        day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
+        minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日 " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+    };
+    return time;
+}
+
+
 function Emotion(content) {
 	this.content = content;
 }
@@ -12,15 +25,9 @@ function Emotion(content) {
 module.exports = Emotion;
 
 Emotion.prototype.save = function (callback){
-	var date = new Date();
 
-	var time = {
-		date: date,
-		year: date.getFullYear(),
-		month: date.getFullYear() + "-" + (date.getMonth() + 1),
-		day: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate(),
-    	minute: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-	};
+
+	var time = getTime();
 	//要存入数据库的文档
 	var emotion = {
 		content: this.content,
@@ -129,6 +136,34 @@ Emotion.getOne = function (eid, callback) {
 };
 
 
+Emotion.saveComment = function (eid, email, name, url, content, callback){
+    var time = getTime();
+    mongodb.open(function (err, db) {
+        if(err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('emotions', function (err, collection) {
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({'eid': eid}, {$push: {
+                comments: {
+                    name: name,
+                    email: email,
+                    url: url,
+                    content: content,
+                    time: time
+                }
+            }}, function (err) {
+                mongodb.close();
+                if (err) return callback(err);
+                callback(null);
+            })
+        });
+    });
+};
 
 
 

@@ -65,11 +65,27 @@ module.exports = function(app){
 				site: site,
 				user: req.session.user,
 				emotion: emotion,
+                comments: emotion.comments,
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()
 			});
 		});
 	});
+    app.post('/emotion/:eid', function (req, res, next){
+        var eid = parseInt(req.params.eid),
+            name = req.body.name,
+            email = req.body.email,
+            url = req.body.url,
+            content = req.body.content;
+        Emotion.saveComment(eid, email, name, url, content, function(err){
+            if(err){
+                req.flash('error', "回复错误!");
+                return res.redirect('/emotion/' + eid);
+            }
+            req.flash('success', "回复成功!");
+            return res.redirect('/emotion/' + eid);
+        });
+    });
 
 	app.get('/post/:pid', function (req, res, next) {
 		var pid = parseInt(req.params.pid);
@@ -82,16 +98,33 @@ module.exports = function(app){
 				req.flash('error', "找不到这篇文章!");
 				return res.redirect('/404');
 			}
+            var comments = {};
 			res.render("posts", {
 				title: post.title,
 				site: site,
 				user: req.session.user,
 				post: post,
+                comments: post.comments,
 				success: req.flash('success').toString(),
 				error: req.flash('error').toString()
 			});
 		});
 	});
+    app.post('/post/:pid', function (req, res, next){
+        var pid = parseInt(req.params.pid),
+            name = req.body.name,
+            email = req.body.email,
+            url = req.body.url,
+            content = req.body.content;
+        Post.saveComment(pid, email, name, url, content, function(err){
+            if(err){
+                req.flash('error', "回复错误!");
+                return res.redirect('/post/' + pid);
+            }
+            req.flash('success', "回复成功!");
+            return res.redirect('/post/' + pid);
+        });
+    });
 
 	app.get('/gallery/:gid', function (req, res, next) {
 		var gid = parseInt(req.params.gid);
