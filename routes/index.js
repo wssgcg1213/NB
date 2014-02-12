@@ -78,6 +78,22 @@ module.exports = function(app){
             url = req.body.url,
             content = req.body.content;
         Emotion.saveComment(eid, email, name, url, content, function(err){
+            if(!eid){
+                req.flash('error', "内部错误!");
+                return res.redirect('/post/' + pid);
+            }
+            if(!email){
+                req.flash('error', "请检查Email!");
+                return res.redirect('/post/' + pid);
+            }
+            if(!name){
+                req.flash('error', "请检查昵称!");
+                return res.redirect('/post/' + pid);
+            }
+            if(!content){
+                req.flash('error', "请检查内容!");
+                return res.redirect('/post/' + pid);
+            }
             if(err){
                 req.flash('error', "回复错误!");
                 return res.redirect('/emotion/' + eid);
@@ -117,6 +133,22 @@ module.exports = function(app){
             url = req.body.url,
             content = req.body.content;
         Post.saveComment(pid, email, name, url, content, function(err){
+            if(!pid){
+                req.flash('error', "内部错误!");
+                return res.redirect('/post/' + pid);
+            }
+            if(!email){
+                req.flash('error', "请检查Email!");
+                return res.redirect('/post/' + pid);
+            }
+            if(!name){
+                req.flash('error', "请检查昵称!");
+                return res.redirect('/post/' + pid);
+            }
+            if(!content){
+                req.flash('error', "请检查内容!");
+                return res.redirect('/post/' + pid);
+            }
             if(err){
                 req.flash('error', "回复错误!");
                 return res.redirect('/post/' + pid);
