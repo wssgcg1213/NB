@@ -137,20 +137,8 @@ module.exports = function(app){
                 req.flash('error', "内部错误!");
                 return res.redirect('/post/' + pid);
             }
-            if(!email){
-                req.flash('error', "请检查Email!");
-                return res.redirect('/post/' + pid);
-            }
-            if(!name){
-                req.flash('error', "请检查昵称!");
-                return res.redirect('/post/' + pid);
-            }
-            if(!content){
-                req.flash('error', "请检查内容!");
-                return res.redirect('/post/' + pid);
-            }
             if(err){
-                req.flash('error', "回复错误!");
+                req.flash('error', err);
                 return res.redirect('/post/' + pid);
             }
             req.flash('success', "回复成功!");

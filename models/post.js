@@ -242,6 +242,15 @@ Post.update = function (pid, title, tags, content, callback) {
 
 Post.saveComment = function (pid, email, name, url, content, callback){
     var time = getTime();
+    if(!email){
+        return callback("请检查Email!");
+    }
+    if(!name){
+        return callback("请检查昵称!");
+    }
+    if(!content){
+        return callback("请检查内容!");
+    }
     mongodb.open(function (err, db) {
         if(err){
             mongodb.close();
