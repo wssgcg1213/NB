@@ -30,6 +30,7 @@
 	  	<li>3</li>
 	  </ul>
 	</div>
+    <% if (success||error) { %>
     <div id="flash">
         <% if (success) { %>
         <div class="success"><%= success %></div>
@@ -38,6 +39,7 @@
         <div class="error"><%= error %> </div>
         <% } %>
     </div>
+    <% } %>
 </div>
 
 <div id="main">

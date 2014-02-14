@@ -94,7 +94,6 @@ Post.prototype.save = function (callback){
  */
 Post.getOne = function(pid, callback){
 	mongodb.open(function (err, db){
-        mongodb.close = db.close;
 		if(err){
 			mongodb.close();
 			return callback(err);
@@ -113,19 +112,20 @@ Post.getOne = function(pid, callback){
 					collection.update({'pid': pid}, {$inc: {'pv': 1}}, function (err){  //pv++
                         mongodb.close();
 						if(err) return callback(err);
-					});
-					marked(doc.content, function (err, content){
-						if(err) return console.log(err);
-						doc.content = content;
-					});
-					doc.comments.forEach(function (comment){
-                        marked(comment.content, function (err, content){
+						marked(doc.content, function (err, content){
 							if(err) return console.log(err);
-							comment.content = content;
+							doc.content = content;
 						});
-					});
-					callback(null, doc);
+						doc.comments.forEach(function (comment){
+                    	    marked(comment.content, function (err, content){
+								if(err) return console.log(err);
+								comment.content = content;
+							});
+						});
+						callback(null, doc);
+					});	
 				}else{
+					mongodb.close();
 					callback(null, null);   //no post
 				}
 			});

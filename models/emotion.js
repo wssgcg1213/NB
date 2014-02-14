@@ -124,8 +124,8 @@ Emotion.getOne = function (eid, callback) {
 					collection.update({'eid': eid}, {$inc: {'pv': 1}}, function (err){  //pv++
 						mongodb.close();
 						if(err) return callback(err);
+						callback(null, doc);
 					});
-					callback(null, doc);
 				}else{
                     mongodb.close();
 					callback(null, null);

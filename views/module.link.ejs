@@ -3,24 +3,9 @@
 		<em class="format-ico link-ico">友链</em>
 		<div class="format-content">
 			<div class="link-content">
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
-				<a href="http://baidu.com">BaIdU!</a>
+                <% for(var i = 0; i<links.length; i++){ %>
+				<a href="<%= links[i].url %>" rel="nofollow"><%= links[i].content %></a>
+                <% } %>
 			</div>
 		</div>
 	</div>

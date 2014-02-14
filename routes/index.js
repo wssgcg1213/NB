@@ -60,15 +60,22 @@ module.exports = function(app){
 				req.flash('error', "找不到这篇心情!");
 				return res.redirect('/404');
 			}
-			res.render("emotions", {
-				title: emotion.title,
-				site: site,
-				user: req.session.user,
-				emotion: emotion,
-                comments: emotion.comments,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});
+            Link.get(site.indexLinkAmount, function(err, links){
+                if (err){
+                    req.flash('error', "友链读取错误!");
+                    return res.redirect('/404');
+                }
+                res.render("emotions", {
+                    title: emotion.title,
+                    site: site,
+                    user: req.session.user,
+                    emotion: emotion,
+                    links: links,
+                    comments: emotion.comments,
+                    success: req.flash('success').toString(),
+                    error: req.flash('error').toString()
+                });
+            });
 		});
 	});
     app.post('/emotion/:eid', function (req, res, next){
@@ -92,26 +99,28 @@ module.exports = function(app){
     });
 
 	app.get('/post/:pid', function (req, res, next) {
-		var pid = parseInt(req.params.pid);
-		Post.getOne(pid, function (err, post) {
-			if (err){
-				req.flash('error', "读取文章错误!");
-				return res.redirect('/404');
-			}
-			if (!post){
-				req.flash('error', "找不到这篇文章!");
-				return res.redirect('/404');
-			}
-            var comments = {};
-			res.render("posts", {
-				title: post.title,
-				site: site,
-				user: req.session.user,
-				post: post,
-                comments: post.comments,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});
+		var pid = parseInt(req.params.pid); 
+        Post.getOne(pid, function (err, post) {
+        	Link.get(site.indexLinkAmount, function (err, links) {
+				if (err){
+					req.flash('error', "读取文章错误!");
+					return res.redirect('/404');
+				}
+				if (!post){
+					req.flash('error', "找不到这篇文章!");
+					return res.redirect('/404');
+				}
+            	res.render("posts", {
+            	    title: post.title,
+            	    site: site,
+            	    links: links,
+            	    user: req.session.user,
+            	    post: post,
+            	    comments: post.comments,
+            	    success: req.flash('success').toString(),
+            	    error: req.flash('error').toString()
+            	});
+        	});
 		});
 	});
     app.post('/post/:pid', function (req, res, next){
@@ -188,6 +197,8 @@ module.exports = function(app){
                                 return res.redirect('/404');
                             }
                             posts = posts.reverse();
+                            emotions = emotions.reverse();
+                            links = links.reverse();
                             res.render('admin/index', {
                                 title: site.title,
                                 site: site,
@@ -351,6 +362,39 @@ module.exports = function(app){
 			});
 	});
 
+    app.get('/admin/links', preCheckLogin);
+    app.get('/admin/links', function (req, res) {
+        Link.get(0, function (err, links) {
+            if(err){
+                req.flash('error', err);
+                res.redirect('/admin');
+            }
+            console.log(links);
+            res.render('admin/links', {
+                site: site,
+                links: links,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+
+    app.post('/admin/links', preCheckLogin);
+    app.post('/admin/links', function (req, res) {
+        var url = req.body.url,
+            content = req.body.content,
+            link = new Link(url, content);
+        link.save(function (err){
+            if(err){
+                req.flash('error', err);
+                return res.redirect('/admin');
+            }
+            req.flash('success', '添加成功!');
+            res.redirect('/admin');//发表成功
+        });
+    });
+
 	app.get('/admin/reg', function (req, res) {
     	res.render('admin/reg', {
     		site: site,
@@ -394,11 +438,15 @@ module.exports = function(app){
 
 	//404
 	app.use(function(req, res) {
-		res.render('404', {
-			site: site,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
-		});
+        Link.get(0, function (err, links) {
+        	if(err) console.log(err);
+        	res.render('404', {
+            	site: site,
+            	links: links,
+        	    success: req.flash('success').toString(),
+        	    error: req.flash('error').toString()
+        	});
+        });
 	});
 
 	function preCheckLogin(req, res, next){

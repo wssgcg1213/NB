@@ -36,51 +36,20 @@
       <div id="profile-links"> Hello, <a href="#" title="Edit your profile"><%= user.name %></a><br />
         <br />
         <a href="/" title="View the Site">View the Site</a> | <a href="/admin/logout" title="Sign Out">Sign Out</a> </div>
-      <ul id="main-nav">
-        <!-- Accordion Menu -->
-        <li> <a href="/admin" class="nav-top-item no-submenu">
-          <!-- Add the class "no-submenu" to menu items with no sub menu -->
-          Dashboard </a> </li>
-        <li> <a href="#" class="nav-top-item">
-          <!-- Add the class "current" to current menu item -->
-          Emotions </a>
-          <ul>
-            <li><a href="/admin/emotions">Write a new Emotion</a></li>
-            <li><a href="#">Manage Emotions</a></li>
-            <!-- Add class "current" to sub menu items also -->
-            <li><a href="#">Manage Comments</a></li>
-          </ul>
-        </li>
-        <li> <a href="#" class="nav-top-item">
-          <!-- Add the class "current" to current menu item -->
-          Posts </a>
-          <ul>
-            <li><a href="/admin/posts">Write a new Post</a></li>
-            <li><a href="#">Manage Posts</a></li>
-            <!-- Add class "current" to sub menu items also -->
-            <li><a href="#">Manage Comments</a></li>
-            <li><a href="#">Manage Categories</a></li>
-          </ul>
-        </li>
-        <li> <a href="#" class="nav-top-item"> Pages </a>
-          <ul>
-            <li><a href="#">Create a Page</a></li>
-            <li><a href="#">Manage Pages</a></li>
-          </ul>
-        </li>
-        <li> <a href="#" class="nav-top-item"> Gallery </a>
-          <ul>
-            <li><a href="#">Upload Images</a></li>
-            <li><a href="#">Manage Galleries</a></li>
-          </ul>
-        </li>
-        <li> <a href="#" class="nav-top-item"> Settings </a>
-          <ul>
-            <li><a href="#">General</a></li>
-            <li><a href="#">Your Profile</a></li>
-          </ul>
-        </li>
-      </ul>
+        <ul id="main-nav">
+            <li>
+                <a href="/admin" class="nav-top-item no-submenu">Dashboard</a>
+            </li>
+            <li>
+                <a href="/admin/emotions" class="nav-top-item no-submenu">Add New Emotion</a>
+            </li>
+            <li>
+                <a href="/admin/posts" class="nav-top-item no-submenu">Add New Post</a>
+            </li>
+            <li>
+                <a href="/admin/links" class="nav-top-item no-submenu">Manage links</a>
+            </li>
+        </ul>
       <!-- End #main-nav -->
 
     </div>

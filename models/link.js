@@ -62,21 +62,14 @@ Link.get = function (amount, callback) {
 				mongodb.close();
 				return callback(err);
 			}
-			collection.count({}, function (err, total) {
-				if(err){
-					mongodb.close();
-					return callback(err);
-				}
-				var skip = 0;
-				collection.find({}, {
-					skip: skip,
-					limit: amount
-				}).sort({lid: -1}).toArray(function (err, docs) {
-					mongodb.close();
-					if(err) return callback(err);
-					callback(null, docs);
-				});
-			});
+            collection.find({}, {
+                skip: 0,
+                limit: amount
+            }).sort({lid: -1}).toArray(function (err, docs) {
+                mongodb.close();
+                if(err) return callback(err);
+                callback(null, docs);
+            });
 		});
 	});
 };
@@ -99,8 +92,8 @@ Link.getOne = function (lid, callback) {
 				return callback(err);
 			}
 			collection.findOne({'lid': lid}, function (err, doc) {
+                mongodb.close();
 				if(err){
-					mongodb.close();
 					return callback(err);
 				}
 				if(doc){

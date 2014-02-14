@@ -51,10 +51,28 @@ li{
 	position: fixed;
 	top: 10px;
 	right: 30px;
-	height: 40px;
-	width: 200px;
-	.box-shadow;
-	background-color: #EEE;
+	opacity: 0.4;
+	-webkit-transition: opacity ease10s;
+	 -moz-transition: opacity ease10s;
+	 -ms-transition: opacity ease10s;
+	 -o-transition: opacity ease10s;
+	 transition: opacity ease 10s; 
+}
+.flash{
+	height: 30px;
+	width: 170px;
+	line-height: 28px;
+	font-size: 16px;
+	color: #FFF;
+	border-radius: 8px;
+}
+.success{
+	background-color: #78bea6;
+	.flash;
+}
+.error{
+	background-color: #E53E3E;
+	.flash;
 }
 .format-ico{
 	background: url("../images/format_ico.png") no-repeat;
@@ -93,6 +111,12 @@ li{
 	min-height: 250px;
 	padding: 20px;
 }
+.mod_lost_child{
+	.module;
+	background-color: #78BEA6;
+	margin: 0!important;
+	width: auto!important;
+}
 #emotion,#post,#gallery,#link,#more,#comment{
 	.module;
 	.wrap{
@@ -100,10 +124,10 @@ li{
 	}
 }
 #emotion{
-	background-color: #16A185;
+	background-color: #70CCBA;
 }
 #post{
-	background-color: #27AF60;
+	background-color: #4886BE;
 }
 #gallery{
 	background-color: #2980B9;
@@ -352,19 +376,22 @@ li{
 }
 #header{
 	height: 170px;
-	background: #ECF1F0;
+	background: rgb(82,195,221);
 	padding: 10px;
 	text-align: center;
+	color: #FFF;
 	h1{
 		font-size: 35px;
 		font-weight: bold;
 		margin: 10px 0;
+		a{color: #FFF;}
 	}
 	h2{
 		font-size: 25px;
 		color: #DDD;
 		margin: 10px 0;
 		font-weight: 200;
+		a{color: #FFF;}
 	}
 	#nav{
 		margin-top: 15px;
