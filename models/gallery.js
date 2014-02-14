@@ -83,21 +83,21 @@ Gallery.getOne = function(gid, callback){
 					collection.update({'gid': gid}, {$inc: {'pv': 1}}, function (err){  //pv++
 						mongodb.close();
 						if(err) return callback(err);
+                        marked(doc.content, function (err, content){
+                            if(err) return console.log(err);
+                            doc.content = content;
+                            doc.title = doc.content.replace(/<\/?.+?>/g,"");
+                            doc.comments.forEach(function (comment){
+                                marked(comment.content, function (err, content){
+                                    if(err) return console.log(err);
+                                    comment.content = content;
+                                });
+                            });
+                        });
+                        callback(null, doc);
 					});
-
-					marked(doc.content, function (err, content){
-						if(err) return console.log(err);
-						doc.content = content;
-						doc.title = doc.content.replace(/<\/?.+?>/g,"");
-					});
-					doc.comments.forEach(function (comment){
-						marked(comment.content, function (err, content){
-							if(err) return console.log(err);
-							comment.content = content;
-						});
-					});
-					callback(null, doc);
 				}else{
+                    mongodb.close();
 					callback(null, null);   //no gallery
 				}
 			});
@@ -165,15 +165,10 @@ Gallery.edit = function (gid, callback) {
 				return callback(err);
 			}
 			collection.findOne({'gid': gid}, function (err, doc) {
-				if(err){
-					mongodb.close();
-					return callback(err);
-				}
-				if(doc){
-					callback(null, doc);
-				}else{
-					callback(null, null);
-				}
+                mongodb.close();
+				if(err) return callback(err);
+				if(doc) return callback(null, doc);
+                callback(null, null);
 			});
 		});
 	});

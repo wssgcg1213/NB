@@ -40,7 +40,6 @@ Link.prototype.save = function (callback){
 					callback(null);
 				});
 			});
-			
 		});
 	});
 };

@@ -115,14 +115,14 @@ Post.getOne = function(pid, callback){
 						marked(doc.content, function (err, content){
 							if(err) return console.log(err);
 							doc.content = content;
+                            doc.comments.forEach(function (comment){
+                                marked(comment.content, function (err, content){
+                                    if(err) return console.log(err);
+                                    comment.content = content;
+                                });
+                            });
+                            callback(null, doc);
 						});
-						doc.comments.forEach(function (comment){
-                    	    marked(comment.content, function (err, content){
-								if(err) return console.log(err);
-								comment.content = content;
-							});
-						});
-						callback(null, doc);
 					});	
 				}else{
 					mongodb.close();
@@ -278,9 +278,27 @@ Post.saveComment = function (pid, email, name, url, content, callback){
     });
 };
 
+Post.delete = function (pid, callback) {
+    mongodb.open(function (err, db) {
+        if(err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('posts', function (err, collection) {
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.remove({pid: pid}, function (err){
+                mongodb.close();
+                if(err) return callback(err);
+                callback(null);
+            });
+        });
+    });
+}
 
-
-
+Post.remove = Post.delete;
 
 
 

@@ -58,14 +58,14 @@
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td><%= i+1 %></td>
-                <td><a href="/admin/post-edit/<%= i+1 %>" title="title"><%= posts[i].title %></a></td>
+                <td><%= posts[i].pid %></td>
+                <td><a href="/admin/post-edit/<%= posts[i].pid %>" title="title"><%= posts[i].title %></a></td>
                 <td><%= posts[i].comments.length %></td>
                 <td><%= posts[i].time.minute %></td>
                 <td>
                   <!-- Icons -->
-                  <a href="/admin/post-edit/<%= i+1 %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
-                  <a href="/admin/post-del/<%= i+1 %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
+                  <a href="/admin/post-edit/<%= posts[i].pid %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
+                  <a href="/admin/post-del/<%= posts[i].pid %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
                 </td>
               </tr>
               <% } %>
@@ -119,14 +119,14 @@
                       <td>
                           <input type="checkbox" />
                       </td>
-                      <td><%= i+1 %></td>
+                      <td><%= emotions[i].eid %></td>
                       <td><a href="/admin/post-edit/<%= i+1 %>" title="title"><%= emotions[i].content %></a></td>
                       <td><%= emotions[i].comments.length %></td>
                       <td><%= emotions[i].time.minute %></td>
                       <td>
                           <!-- Icons -->
-                          <a href="/admin/post-edit/<%= i+1 %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
-                          <a href="/admin/post-del/<%= i+1 %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
+                          <a href="/admin/post-edit/<%= emotions[i].eid %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
+                          <a href="/admin/post-del/<%= emotions[i].eid %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
                       </td>
                   </tr>
                   <% } %>

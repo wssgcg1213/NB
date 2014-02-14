@@ -191,14 +191,14 @@ module.exports = function(app){
                             req.flash('error', "主页相册读取错误!");
                             return res.redirect('/404');
                         }
-                        Link.get(0, function (err, links) {
-                            if (err) {
-                                req.flash('error', "主页友链读取错误!");
-                                return res.redirect('/404');
-                            }
+                        //Link.get(0, function (err, links) {
+                        //    if (err) {
+                        //        req.flash('error', "主页友链读取错误!");
+                        //        return res.redirect('/404');
+                        //    }
                             posts = posts.reverse();
                             emotions = emotions.reverse();
-                            links = links.reverse();
+                        //    links = links.reverse();
                             res.render('admin/index', {
                                 title: site.title,
                                 site: site,
@@ -206,11 +206,11 @@ module.exports = function(app){
                                 emotions: emotions,
                                 posts: posts,
                                 galleries: galleries,
-                                links: links,
+                                //links: links,
                                 success: req.flash('success').toString(),
                                 error: req.flash('error').toString()
                             });
-                        });
+                       // });
                     });
                 });
             });
@@ -311,7 +311,7 @@ module.exports = function(app){
                 req.flash('error', "读取文章错误!");
                 res.redirect('/admin');
             }
-            post.tags = post.tags.join(",");
+            if(post.tags) post.tags = post.tags.join(",");
             res.render('admin/post-edit', {
                 site: site,
                 post: post,
@@ -335,6 +335,37 @@ module.exports = function(app){
             }
             req.flash('success', '修改成功!');
             res.redirect('/admin');//修改成功
+        });
+    });
+
+    app.get('/admin/post-del/:pid', preCheckLogin);
+    app.get('/admin/post-del/:pid', function (req, res) {
+        var pid = parseInt(req.params.pid);
+        Post.edit(pid, function (err, post) {
+            if(err){
+                req.flash('error', "读取Post错误");
+                return res.redirect('/admin');
+            }
+            res.render('admin/post-del', {
+                site: site,
+                post: post,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+    app.post('/admin/post-del/:pid', preCheckLogin);
+    app.post('/admin/post-del/:pid', function (req, res) {
+        console.log(req);
+        var pid = parseInt(req.params.pid);
+        Post.delete(pid, function (err) {
+            if(err){
+                req.flash('error', "删除出错了> <!");
+                return res.redirect('/admin');
+            }
+            req.flash('success', "删除成功!");
+            res.redirect('/admin');
         });
     });
 
@@ -369,7 +400,6 @@ module.exports = function(app){
                 req.flash('error', err);
                 res.redirect('/admin');
             }
-            console.log(links);
             res.render('admin/links', {
                 site: site,
                 links: links,
@@ -437,17 +467,13 @@ module.exports = function(app){
 	});
 
 	//404
-	app.use(function(req, res) {
-        Link.get(0, function (err, links) {
-        	if(err) console.log(err);
-        	res.render('404', {
-            	site: site,
-            	links: links,
-        	    success: req.flash('success').toString(),
-        	    error: req.flash('error').toString()
-        	});
-        });
-	});
+	//app.use(function(req, res) {
+    //   res.render('404', {
+    //   	site: site,
+    //    success: req.flash('success').toString(),
+    //    error: req.flash('error').toString()
+    //   });
+	//});
 
 	function preCheckLogin(req, res, next){
 		if(!req.session.user){
