@@ -5,7 +5,6 @@
 			<div class="comment-content">
                 <div class="comment-respond">
                     <form method="POST">
-                        <textarea name="content" onclick="document.getElementById('click-show').style.height='150px'" cols="30" rows="10" placeholder="写点什么把..."></textarea>
                         <div id="click-show">
                             <div>
                                 <input class="comment-name" type="text" name="name" placeholder="昵称"/>
@@ -20,8 +19,8 @@
                                 <label>网址</label>
                             </div>
                         </div>
+                        <textarea name="content" onclick="document.getElementById('click-show').style.height='150px'" cols="30" rows="10" placeholder="写点什么把..."></textarea>
                         <a class="btn" id="submit" href="##" onclick="document.getElementsByTagName('form')[0].submit()">提交!</a>
-
                     </form>
                 </div>
                  <ol class="comment-list">
