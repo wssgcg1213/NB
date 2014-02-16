@@ -6,7 +6,7 @@
 				<% for(var i = 0; i<posts.length; i++){ %>
 					<li class="post-cell">
 						<a href="post/<%= posts[i].pid %>" rel="点击阅读 <%= posts[i].title %>" title="<%= posts[i].title %>">
-							<p><%- posts[i].content %></p>
+							<p><% posts[i].content %></p>
 						</a>
 						<h3><a href="post/<%= posts[i].pid %>" title="<%= posts[i].title %>"><%= posts[i].titlesub %></a></h3>
 						<div class="post-info">
