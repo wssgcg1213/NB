@@ -2,8 +2,9 @@
  * post (文章)模型
  */
 
-var mongodb = require('./db');
-var marked = require('marked');
+var mongodb = require('./db'),
+    marked = require('marked');
+
 
 /**
  * [sub 字符串截取(中文算2个字符)]
@@ -19,7 +20,8 @@ String.prototype.sub = function(n) {
 		if(this.substr(0, i).replace(r, "mm").length>=n) {
 		return this.substr(0, i) +"...";
 		}
-	} return this;
+	}
+    return this;
 };
 
 function getTime() {
@@ -33,11 +35,6 @@ function getTime() {
     };
     return time;
 }
-
-
-
-
-
 
 function Post(title, tags, content) {
 	this.title = title;
@@ -68,20 +65,16 @@ Post.prototype.save = function (callback){
                 mongodb.close();
 				return callback(err);
 			}
-			collection.count({}, function (err, count){
-				if(err){
-                    mongodb.close();
-					return callback(err);
-				}
-				//插
-				post.pid = count + 1;
-				collection.insert(post, {safe: true}, function (err){
-					db.close();
-					if(err) return callback(err);
-					callback(null);
-				});
-			});
-			
+            collection.find({}, {
+                limit: 1
+            }).sort({pid: -1}).toArray(function(err, last){
+                post.pid = last[0].pid + 1;
+                collection.insert(post, {safe: true}, function (err){
+			    	db.close();
+			       	if(err) return callback(err);
+			       	callback(null);
+			    });
+            });
 		});
 	});
 };
@@ -299,7 +292,3 @@ Post.delete = function (pid, callback) {
 }
 
 Post.remove = Post.delete;
-
-
-
-
