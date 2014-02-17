@@ -143,7 +143,7 @@ Post.get = function (amount, callback) {
 					mongodb.close();
 					if(err) return callback(err);
 					docs.forEach(function (doc) {
-						doc.titlesub = doc.title.sub(16);
+						doc.titlesub = doc.title.sub(14);
 						marked(doc.content, {sanitize: false}, function (err, content){
 							if(err) return console.log(err);
 							doc.content = content.replace(/<\/?.+?>/g,"").sub(150);
