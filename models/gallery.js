@@ -2,8 +2,9 @@
  * gallery 模型
  */
 
-var mongodb = require('./db');
-var marked = require('marked');
+var mongodb = require('./db'),
+    marked = require('marked'),
+    getTime = require('./gettime');
 
 function Gallery(url, content) {
 	this.url = url;
@@ -15,13 +16,7 @@ module.exports = Gallery;
 Gallery.prototype.save = function (callback){
 	var date = new Date();
 
-	var time = {
-		date: date,
-		year: date.getFullYear(),
-		month: date.getFullYear() + "年" + (date.getMonth() + 1),
-		day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
-    	minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-	};
+	var time = getTime();
 	//要存入数据库的文档
 	var gallery = {
 		url: this.url,
@@ -39,20 +34,14 @@ Gallery.prototype.save = function (callback){
 				mongodb.close();
 				return callback(err);
 			}
-			collection.count({}, function (err, count){
-				if(err){
-					mongodb.close();
-					return callback(err);
-				}
-				//插
-				gallery.gid = count + 1;
-				collection.insert(gallery, {safe: true}, function (err){
-					mongodb.close();
-					if(err) return callback(err);
-					callback(null);
-				});
-			});
-			
+            collection.find({}, {sort: {gid: -1}, limit:1}).toArray(function(err, last){
+                gallery.gid = last[0] ? last[0].gid + 1 : 1;
+                collection.insert(gallery, {safe: true}, function (err){
+                    db.close();
+                    if(err) return callback(err);
+                    callback(null);
+                });
+            });
 		});
 	});
 };

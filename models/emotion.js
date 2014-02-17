@@ -3,20 +3,8 @@
  * 这里不用markdown
  */
 
-var mongodb = require('./db');
-
-function getTime(){
-    var date = new Date();
-    var time = {
-        date: date,
-        year: date.getFullYear(),
-        month: date.getFullYear() + "年" + (date.getMonth() + 1) + "月",
-        day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
-        minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日 " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-    };
-    return time;
-}
-
+var mongodb = require('./db'),
+    getTime = require('./gettime');
 
 function Emotion(content) {
 	this.content = content;
@@ -25,7 +13,6 @@ function Emotion(content) {
 module.exports = Emotion;
 
 Emotion.prototype.save = function (callback){
-
 
 	var time = getTime();
 	//要存入数据库的文档
@@ -44,19 +31,14 @@ Emotion.prototype.save = function (callback){
 				mongodb.close();
 				return callback(err);
 			}
-			collection.count({}, function (err, count){
-				if(err){
-					mongodb.close();
-					return callback(err);
-				}
-				//插
-				emotion.eid = count + 1;
-				collection.insert(emotion, {safe: true}, function (err){
-					mongodb.close();
-					if(err) return callback(err);
-					callback(null);
-				});
-			});
+            collection.find({}, {sort: {eid: -1}, limit:1}).toArray(function(err, last){
+                emotion.eid = last[0] ? last[0].eid + 1 : 1;
+                collection.insert(emotion, {safe: true}, function (err){
+                    db.close();
+                    if(err) return callback(err);
+                    callback(null);
+                });
+            });
 		});
 	});
 };
@@ -174,7 +156,81 @@ Emotion.saveComment = function (eid, email, name, url, content, callback){
     });
 };
 
+/**
+ * 更新内容
+ * @param eid
+ * @param content
+ * @param callback
+ */
+Emotion.update = function (eid, content, callback) {
+    mongodb.open(function (err, db) {
+        if (err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('emotions', function (err, collection) {
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({eid: eid}, {$set: {content: content}}, function (err, emotion) {
+                mongodb.close;
+                if(err) return callback(err);
+                callback(null, emotion);
+            })
+        });
+    });
+}
 
+/**
+ * 返回原始文档,后台编辑用
+ * @param eid
+ * @param callback
+ */
+Emotion.edit = function (eid, callback) {
+    mongodb.open(function (err, db) {
+        if (err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('emotions', function (err, collection) {
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.findOne({eid: eid}, function (err, emotion) {
+                mongodb.close;
+                if(err) return callback(err);
+                callback(null, emotion);
+            })
+        });
+    });
+}
+
+/**
+ * 删除emotion
+ * @param eid
+ * @param callback
+ */
+Emotion.delete = function (eid, callback) {
+    mongodb.open(function (err, db) {
+        if (err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('emotions', function (err, collection) {
+            if (err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.remove({eid: eid}, function (err) {
+                mongodb.close;
+                if(err) return callback(err);
+                callback(null);
+            })
+        });
+    });
+}
 
 
 

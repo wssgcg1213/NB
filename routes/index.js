@@ -357,7 +357,6 @@ module.exports = function(app){
     });
     app.post('/admin/post-del/:pid', preCheckLogin);
     app.post('/admin/post-del/:pid', function (req, res) {
-        console.log(req);
         var pid = parseInt(req.params.pid);
         Post.delete(pid, function (err) {
             if(err){
@@ -392,6 +391,70 @@ module.exports = function(app){
 				res.redirect('/admin');//发表成功
 			});
 	});
+
+    app.get('/admin/emotion-edit/:eid', preCheckLogin);
+    app.get('/admin/emotion-edit/:eid', function (req, res) {
+        var eid = parseInt(req.params.eid);
+        Emotion.edit(eid, function (err, emotion) {
+            if(err || !emotion){
+                req.flash('error', "读取Emotion错误!");
+                res.redirect('/admin');
+            }
+            return res.render('admin/emotion-edit', {
+                site: site,
+                emotion: emotion,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+
+    });
+
+    app.post('/admin/emotion-edit/:eid', preCheckLogin);
+    app.post('/admin/emotion-edit/:eid', function (req, res) {
+        var eid = parseInt(req.params.eid),
+            content = req.body.content;
+        Emotion.update(eid, content, function (err){
+            if(err){
+                req.flash('error', "update错误");
+                return res.redirect('/admin');
+            }
+            req.flash('success', '修改成功!');
+            res.redirect('/admin');//修改成功
+        });
+    });
+
+    app.get('/admin/emotion-del/:eid', preCheckLogin);
+    app.get('/admin/emotion-del/:eid', function (req, res) {
+        var eid = parseInt(req.params.eid);
+        Emotion.edit(eid, function (err, emotion) {
+            if(err){
+                req.flash('error', "读取emotion错误");
+                return res.redirect('/admin');
+            }
+            res.render('admin/emotion-del', {
+                site: site,
+                emotion: emotion,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+
+    app.post('/admin/emotion-del/:eid', preCheckLogin);
+    app.post('/admin/emotion-del/:eid', function (req, res) {
+        var eid = parseInt(req.params.eid);
+        Emotion.delete(eid, function (err) {
+            if(err){
+                req.flash('error', "删除出错了> <!");
+                return res.redirect('/admin');
+            }
+            req.flash('success', "删除成功!");
+            res.redirect('/admin');
+        });
+    });
 
     app.get('/admin/links', preCheckLogin);
     app.get('/admin/links', function (req, res) {

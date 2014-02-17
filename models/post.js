@@ -3,7 +3,8 @@
  */
 
 var mongodb = require('./db'),
-    marked = require('marked');
+    marked = require('marked'),
+    getTime = require('./gettime');
 
 
 /**
@@ -23,18 +24,6 @@ String.prototype.sub = function(n) {
 	}
     return this;
 };
-
-function getTime() {
-    var date = new Date();
-    var time = {
-        date: date,
-        year: date.getFullYear(),
-        month: date.getFullYear() + "年" + (date.getMonth() + 1),
-        day: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日",
-        minute: date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
-    };
-    return time;
-}
 
 function Post(title, tags, content) {
 	this.title = title;
@@ -65,10 +54,9 @@ Post.prototype.save = function (callback){
                 mongodb.close();
 				return callback(err);
 			}
-            collection.find({}, {
-                limit: 1
-            }).sort({pid: -1}).toArray(function(err, last){
-                post.pid = last[0].pid + 1;
+            collection.find({}, {sort: {pid: -1}, limit:1}).toArray(function(err, last){
+                console.log(last);
+                post.pid = last[0] ? parseInt(last[0].pid) + 1 : 1;
                 collection.insert(post, {safe: true}, function (err){
 			    	db.close();
 			       	if(err) return callback(err);

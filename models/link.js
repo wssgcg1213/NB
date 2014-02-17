@@ -3,7 +3,7 @@
  */
 
 var mongodb = require('./db');
-var marked = require('marked');
+    marked = require('marked');
 
 function Link(url, content) {
 	this.url = url;
@@ -27,19 +27,14 @@ Link.prototype.save = function (callback){
 				mongodb.close();
 				return callback(err);
 			}
-			collection.count({}, function (err, count){
-				if(err){
-					mongodb.close();
-					return callback(err);
-				}
-				//插
-				link.lid = count + 1;
-				collection.insert(link, {safe: true}, function (err){
-					mongodb.close();
-					if(err) return callback(err);
-					callback(null);
-				});
-			});
+            collection.find({}, {sort: {lid: -1}, limit:1}).toArray(function(err, last){
+                link.lid = last[0] ? last[0].lid + 1 : 1;
+                collection.insert(link, {safe: true}, function (err){
+                    db.close();
+                    if(err) return callback(err);
+                    callback(null);
+                });
+            });
 		});
 	});
 };
