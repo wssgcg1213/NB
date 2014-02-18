@@ -355,6 +355,7 @@ module.exports = function(app){
             });
         });
     });
+
     app.post('/admin/post-del/:pid', preCheckLogin);
     app.post('/admin/post-del/:pid', function (req, res) {
         var pid = parseInt(req.params.pid);
@@ -415,7 +416,7 @@ module.exports = function(app){
     app.post('/admin/emotion-edit/:eid', function (req, res) {
         var eid = parseInt(req.params.eid),
             content = req.body.content;
-        Emotion.update(eid, content, function (err){
+        Emotion.update(eid, content, function (err) {
             if(err){
                 req.flash('error', "update错误");
                 return res.redirect('/admin');
@@ -433,7 +434,7 @@ module.exports = function(app){
                 req.flash('error', "读取emotion错误");
                 return res.redirect('/admin');
             }
-            res.render('admin/emotion-del', {
+            return res.render('admin/emotion-del', {
                 site: site,
                 emotion: emotion,
                 user: req.session.user,

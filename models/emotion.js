@@ -171,7 +171,7 @@ Emotion.update = function (eid, content, callback) {
                 return callback(err);
             }
             collection.update({eid: eid}, {$set: {content: content}}, function (err, emotion) {
-                mongodb.close;
+                mongodb.close();
                 if(err) return callback(err);
                 callback(null, emotion);
             })
@@ -196,7 +196,7 @@ Emotion.edit = function (eid, callback) {
                 return callback(err);
             }
             collection.findOne({eid: eid}, function (err, emotion) {
-                mongodb.close;
+                mongodb.close();
                 if(err) return callback(err);
                 callback(null, emotion);
             })
@@ -221,7 +221,7 @@ Emotion.delete = function (eid, callback) {
                 return callback(err);
             }
             collection.remove({eid: eid}, function (err) {
-                mongodb.close;
+                mongodb.close();
                 if(err) return callback(err);
                 callback(null);
             })
