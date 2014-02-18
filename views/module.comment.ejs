@@ -11,8 +11,8 @@
                                 <label>昵称<span class="red">*</span></label>
                             </div>
                             <div>
-                                <input class="comment-email" type="text" name="email" placeholder="邮箱"/>
-                                <label>邮箱<span class="red">*</span></label>
+                                <input class="comment-qq" type="text" name="qq" placeholder="QQ号码"/>
+                                <label>QQ</label>
                             </div>
                             <div>
                                 <input class="comment-url" type="text" name="url" placeholder="网址"/>
@@ -27,7 +27,7 @@
                      <% for(var j = 0; j<comments.length; j++){ %>
                      <li class="comment-cell" id="div-comment">
                          <div class="comment-author">
-                             <img src="http://ruby-china.org/avatar/" class="avatar">
+                             <img src="http://api.us1.rpvhost.net/qzonelogo.php?uin=<%= comments[j].qq %>" class="avatar">
                              <strong><%= comments[j].name %></strong> :
                              <span class="datetime"><%= comments[j].time.minute %></span>
                          </div>

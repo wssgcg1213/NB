@@ -118,11 +118,8 @@ Emotion.getOne = function (eid, callback) {
 };
 
 
-Emotion.saveComment = function (eid, email, name, url, content, callback){
+Emotion.saveComment = function (eid, qq, name, url, content, callback){
     var time = getTime();
-    if(!email){
-        return callback("请检查Email!");
-    }
     if(!name){
         return callback("请检查昵称!");
     }
@@ -142,7 +139,7 @@ Emotion.saveComment = function (eid, email, name, url, content, callback){
             collection.update({'eid': eid}, {$push: {
                 comments: {
                     name: name,
-                    email: email,
+                    qq: qq,
                     url: url,
                     content: content,
                     time: time

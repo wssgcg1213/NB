@@ -221,11 +221,8 @@ Post.update = function (pid, title, tags, content, callback) {
 	});
 };
 
-Post.saveComment = function (pid, email, name, url, content, callback){
+Post.saveComment = function (pid, qq, name, url, content, callback){
     var time = getTime();
-    if(!email){
-        return callback("请检查Email!");
-    }
     if(!name){
         return callback("请检查昵称!");
     }
@@ -245,7 +242,7 @@ Post.saveComment = function (pid, email, name, url, content, callback){
             collection.update({'pid': pid}, {$push: {
                 comments: {
                     name: name,
-                    email: email,
+                    qq: qq,
                     url: url,
                     content: content,
                     time: time

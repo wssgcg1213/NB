@@ -81,14 +81,14 @@ module.exports = function(app){
     app.post('/emotion/:eid', function (req, res, next){
         var eid = parseInt(req.params.eid),
             name = req.body.name,
-            email = req.body.email,
+            qq = req.body.qq ? req.body.qq : 0,
             url = req.body.url,
             content = req.body.content;
         if(!eid){
             req.flash('error', "内部错误!");
             return res.redirect('/emotion/' + eid);
         }
-        Emotion.saveComment(eid, email, name, url, content, function(err){
+        Emotion.saveComment(eid, qq, name, url, content, function(err){
             if(err){
                 req.flash('error', err);
                 return res.redirect('/emotion/' + eid);
@@ -126,10 +126,10 @@ module.exports = function(app){
     app.post('/post/:pid', function (req, res, next){
         var pid = parseInt(req.params.pid),
             name = req.body.name,
-            email = req.body.email,
+            qq = req.body.qq ? req.body.qq : 0,
             url = req.body.url,
             content = req.body.content;
-        Post.saveComment(pid, email, name, url, content, function(err){
+        Post.saveComment(pid, qq, name, url, content, function(err){
             if(!pid){
                 req.flash('error', "内部错误!");
                 return res.redirect('/post/' + pid);
@@ -509,7 +509,7 @@ module.exports = function(app){
 		var newUser = new User({
 			name: req.body.name,
 			password: password_md5,
-			email: req.body.email
+			qq: req.body.qq
 		});
 
 		User.get(newUser.name, function (err, user) {
