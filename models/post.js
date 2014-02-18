@@ -55,7 +55,6 @@ Post.prototype.save = function (callback){
 				return callback(err);
 			}
             collection.find({}, {sort: {pid: -1}, limit:1}).toArray(function(err, last){
-                console.log(last);
                 post.pid = last[0] ? parseInt(last[0].pid) + 1 : 1;
                 collection.insert(post, {safe: true}, function (err){
 			    	db.close();
