@@ -465,6 +465,7 @@ module.exports = function(app){
                 req.flash('error', err);
                 res.redirect('/admin');
             }
+            links = links.reverse();
             res.render('admin/links', {
                 site: site,
                 links: links,
