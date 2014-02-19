@@ -192,14 +192,14 @@ module.exports = function(app){
                             req.flash('error', "主页相册读取错误!");
                             return res.redirect('/404');
                         }
-                        //Link.get(0, function (err, links) {
-                        //    if (err) {
-                        //        req.flash('error', "主页友链读取错误!");
-                        //        return res.redirect('/404');
-                        //    }
+                        Link.get(0, function (err, links) {
+                            if (err) {
+                                req.flash('error', "主页友链读取错误!");
+                                return res.redirect('/404');
+                            }
                             posts = posts.reverse();
                             emotions = emotions.reverse();
-                        //    links = links.reverse();
+                            links = links.reverse();
                             res.render('admin/index', {
                                 title: site.title,
                                 site: site,
@@ -207,11 +207,11 @@ module.exports = function(app){
                                 emotions: emotions,
                                 posts: posts,
                                 galleries: galleries,
-                                //links: links,
+                                links: links,
                                 success: req.flash('success').toString(),
                                 error: req.flash('error').toString()
                             });
-                       // });
+                        });
                     });
                 });
             });
@@ -309,7 +309,7 @@ module.exports = function(app){
         var pid = parseInt(req.params.pid);
         Post.edit(pid, function (err, post) {
             if(err || !post){
-                req.flash('error', "读取文章错误!");
+                req.flash('error', "??????!");
                 res.redirect('/admin');
             }
             if(post.tags) post.tags = post.tags.join(",");
@@ -331,11 +331,11 @@ module.exports = function(app){
             content = req.body.content;
         Post.update(pid, title, tags, content, function (err, post){
             if(err){
-                req.flash('error', "update错误");
+                req.flash('error', "update??");
                 return res.redirect('/admin');
             }
-            req.flash('success', '修改成功!');
-            res.redirect('/admin');//修改成功
+            req.flash('success', '????!');
+            res.redirect('/admin');//????
         });
     });
 
@@ -344,7 +344,7 @@ module.exports = function(app){
         var pid = parseInt(req.params.pid);
         Post.edit(pid, function (err, post) {
             if(err){
-                req.flash('error', "读取Post错误");
+                req.flash('error', "??Post??");
                 return res.redirect('/admin');
             }
             res.render('admin/post-del', {
@@ -362,10 +362,10 @@ module.exports = function(app){
         var pid = parseInt(req.params.pid);
         Post.delete(pid, function (err) {
             if(err){
-                req.flash('error', "删除出错了> <!");
+                req.flash('error', "?????> <!");
                 return res.redirect('/admin');
             }
-            req.flash('success', "删除成功!");
+            req.flash('success', "????!");
             res.redirect('/admin');
         });
     });
@@ -450,7 +450,7 @@ module.exports = function(app){
         var eid = parseInt(req.params.eid);
         Emotion.delete(eid, function (err) {
             if(err){
-                req.flash('error', "删除出错了> <!");
+                req.flash('error', "删除出错了!");
                 return res.redirect('/admin');
             }
             req.flash('success', "删除成功!");
@@ -486,7 +486,71 @@ module.exports = function(app){
                 return res.redirect('/admin');
             }
             req.flash('success', '添加成功!');
-            res.redirect('/admin');//发表成功
+            res.redirect('/admin/links');//发表成功
+        });
+    });
+
+    app.get('/admin/link-edit/:lid', preCheckLogin);
+    app.get('/admin/link-edit/:lid', function (req, res) {
+        var lid = parseInt(req.params.lid);
+        Link.edit(lid, function (err, link) {
+            if(err || !link){
+                req.flash('error', "读取链接错误!");
+                res.redirect('/admin');
+            }
+            res.render('admin/link-edit', {
+                site: site,
+                link: link,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+
+    app.post('/admin/link-edit/:lid', preCheckLogin);
+    app.post('/admin/link-edit/:lid', function (req, res) {
+        var lid = parseInt(req.params.lid),
+            url = req.body.url,
+            content = req.body.content;
+        Link.update(lid, url, content, function (err){
+            if(err){
+                req.flash('error', "update错误");
+                return res.redirect('/admin');
+            }
+            req.flash('success', '修改成功!');
+            res.redirect('/admin/links');//修改成功
+        });
+    });
+
+    app.get('/admin/link-del/:lid', preCheckLogin);
+    app.get('/admin/link-del/:lid', function (req, res) {
+        var lid = parseInt(req.params.lid);
+        Link.edit(lid, function (err, link) {
+            if(err){
+                req.flash('error', "读取Link错误");
+                return res.redirect('/admin');
+            }
+            res.render('admin/link-del', {
+                site: site,
+                link: link,
+                user: req.session.user,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+
+    app.post('/admin/link-del/:lid', preCheckLogin);
+    app.post('/admin/link-del/:lid', function (req, res) {
+        var lid = parseInt(req.params.lid);
+        Link.delete(lid, function (err) {
+            if(err){
+                req.flash('error', "删除出错了!");
+                return res.redirect('/admin');
+            }
+            req.flash('success', "删除成功!");
+            res.redirect('/admin/links');
         });
     });
 
@@ -532,13 +596,13 @@ module.exports = function(app){
 	});
 
 	//404
-	//app.use(function(req, res) {
-    //   res.render('404', {
-    //   	site: site,
-    //    success: req.flash('success').toString(),
-    //    error: req.flash('error').toString()
-    //   });
-	//});
+	app.use(function(req, res) {
+        res.render('404', {
+       	site: site,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+       });
+	});
 
 	function preCheckLogin(req, res, next){
 		if(!req.session.user){

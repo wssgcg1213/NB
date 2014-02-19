@@ -6,6 +6,7 @@
         <ul class="content-box-tabs">
           <li><a href="#tab1" class="default-tab">Posts</a></li>
            <li><a href="#tab2">Emotions</a></li>
+           <li><a href="#tab3">Links</a></li>
           <!-- href must be unique and match the id of target div -->
           <!-- <li><a href="#tab2">XXXX</a></li> -->
         </ul>
@@ -74,6 +75,9 @@
           </table>
         </div>
         <!-- End #tab1 -->
+
+
+
           <div class="tab-content" id="tab2">
               <!-- This is the target div. id must match the href of this div's tab -->
               <table>
@@ -120,7 +124,7 @@
                           <input type="checkbox" />
                       </td>
                       <td><%= emotions[i].eid %></td>
-                      <td><a href="/admin/post-edit/<%= i+1 %>" title="title"><%= emotions[i].content %></a></td>
+                      <td><a href="/admin/emotion-edit/<%= i+1 %>" title="title"><%= emotions[i].content %></a></td>
                       <td><%= emotions[i].comments.length %></td>
                       <td><%= emotions[i].time.minute %></td>
                       <td>
@@ -135,6 +139,66 @@
               </table>
           </div>
           <!-- End #tab2 -->
+
+
+          <div class="tab-content" id="tab3">
+              <!-- This is the target div. id must match the href of this div's tab -->
+              <table>
+                  <thead>
+                  <tr>
+                      <th>
+                          <input class="check-all" type="checkbox" />
+                      </th>
+                      <th>LID</th>
+                      <th>URL</th>
+                      <th>Content</th>
+                      <th>Edit</th>
+                  </tr>
+                  </thead>
+                  <tfoot>
+                  <tr>
+                      <td colspan="6">
+                          <div class="bulk-actions align-left">
+                              <select name="dropdown">
+                                  <option value="option1">Choose an action...</option>
+                                  <option value="option2">Edit</option>
+                                  <option value="option3">Delete</option>
+                              </select>
+                              <a class="button" href="#">Apply to selected</a></div>
+                          <div class="pagination">
+                              <a href="#" title="First Page">&laquo; First</a>
+                              <a href="#" title="Previous Page">&laquo; Previous</a>
+                              <a href="#" class="number current" title="1">1</a>
+                              <a href="#" title="Next Page">Next &raquo;</a>
+                              <a href="#" title="Last Page">Last &raquo;</a>
+                          </div>
+                          <!-- End .pagination -->
+                          <div class="clear"></div>
+                      </td>
+                  </tr>
+                  </tfoot>
+                  <tbody>
+
+                  <% for(var i = 0; i<links.length; i++){ %>
+                  <tr>
+                      <td>
+                          <input type="checkbox" />
+                      </td>
+                      <td><%= links[i].lid %></td>
+                      <td><a href="/admin/link-edit/<%= i+1 %>" title="title"><%= links[i].url %></a></td>
+                      <td><%= links[i].content %></td>
+                      <td>
+                          <!-- Icons -->
+                          <a href="/admin/link-edit/<%= links[i].lid %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
+                          <a href="/admin/link-del/<%= links[i].lid %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
+                      </td>
+                  </tr>
+                  <% } %>
+
+                  </tbody>
+              </table>
+          </div>
+          <!-- End #tab3 -->
       </div>
       <!-- End .content-box-content -->
     </div>

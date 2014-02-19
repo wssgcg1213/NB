@@ -125,8 +125,25 @@ Link.update = function (lid, url, content, callback) {
 	});
 };
 
-
-
+Link.delete = function (lid, callback) {
+    mongodb.open(function (err, db) {
+        if(err){
+            mongodb.close();
+            return callback(err);
+        }
+        db.collection('links', function (err, collection) {
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.remove({lid: lid}, function (err) {
+                mongodb.close();
+                if(err) return callback(err);
+                callback(null);
+            });
+        });
+    });
+}
 
 
 
