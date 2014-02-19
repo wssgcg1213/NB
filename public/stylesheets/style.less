@@ -136,7 +136,7 @@ li{
 	background-color: #7F8C8D;
 }
 #link{
-	background-color: #C0392B;
+	background-color: #D8398C;
 }
 #more{
 	background-color: #8E44AD;
@@ -371,12 +371,30 @@ li{
 		}
 	}
 	.more-content{
-		
+		margin: 30px;
+		p{
+			line-height: 2em;
+			color: #FFF;
+			font-size: 20px;
+			a{
+				color: #FFF;
+			}
+			input{
+				width: 200px;
+    			height: 30px;
+    			border: 0;
+    			border-radius: 4px;
+    			color: #000;
+    			line-height: 32px;
+    			font-size: 18px;
+    			padding: 0 10px;
+    		}
+		}
 	}
 }
 #header{
 	height: 170px;
-	background: rgb(82,195,221);
+	background: #F36464;
 	padding: 10px;
 	text-align: center;
 	color: #FFF;
@@ -391,7 +409,20 @@ li{
 		color: #DDD;
 		margin: 10px 0;
 		font-weight: 200;
-		a{color: #FFF;}
+		p{	
+			font-family: Georgia,Times,serif;
+			font-style: italic;
+			&:before{
+				content: "\201C";
+			}
+			&:after{
+				content: "\201D";	
+			}
+			a{
+				color: rgba(13, 100, 141, 1);
+			}
+		}
+		
 	}
 	#nav{
 		margin-top: 15px;
@@ -399,6 +430,21 @@ li{
 			font-size: 25px;
 			display: inline-block;
 			margin: 0 15px;
+			a{	
+				border-radius: 3px;
+				padding: 5px;
+				color: #FFF;
+				font-size: 18px;
+				-webkit-transition: background 400ms;
+				-moz-transition: background 400ms;
+				-ms-transition: background 400ms;
+				-o-transition: background 400ms;
+				transition: background 400ms;
+				&:hover{
+					background: #4886be;
+					text-decoration: none;
+				}
+			}
 		}
 	}
 }

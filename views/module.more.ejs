@@ -1,6 +1,17 @@
 <div id="more">
 	<div class="wrap">
 		<em class="format-ico more-ico">更多</em>
-		<div class="format-content"></div>
+		<div class="format-content">
+            <div class="more-content">
+                <p><%= site.siteinfo %></p>
+                <p><%= site.authorinfo %></p>
+                <p><%= site.copyright %></p>
+                <p><a href="/rss">RSS</a>&nbsp;|&nbsp;<a href="/admin">后台登录</a>&nbsp;|&nbsp;<a href="/sitemap.xml">Sitemap</a></p>
+                <form action="/search" method="GET">
+                    <p><input type="text" placeholder="Search..."/></p>
+                </form>
+
+            </div>
+        </div>
 	</div>
 </div>
