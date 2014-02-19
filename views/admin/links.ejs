@@ -56,13 +56,13 @@
                     <td>
                         <input type="checkbox" />
                     </td>
-                    <td><%= i+1 %></td>
-                    <td><a href="/admin/link-edit/<%= i+1 %>" title="title"><%= links[i].content %></a></td>
+                    <td><%= links.lid %></td>
+                    <td><a href="/admin/link-edit/<%= links.lid %>" title="title"><%= links[i].content %></a></td>
                     <td><%= links[i].url %></td>
                     <td>
                         <!-- Icons -->
-                        <a href="/admin/link-edit/<%= i+1 %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
-                        <a href="/admin/link-del/<%= i+1 %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
+                        <a href="/admin/link-edit/<%= links.lid %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
+                        <a href="/admin/link-del/<%= links.lid %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
                     </td>
                 </tr>
                 <% } %>

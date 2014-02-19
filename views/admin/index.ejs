@@ -149,9 +149,9 @@
                       <th>
                           <input class="check-all" type="checkbox" />
                       </th>
-                      <th>LID</th>
+                      <th>ID</th>
+                      <th>标题</th>
                       <th>URL</th>
-                      <th>Content</th>
                       <th>Edit</th>
                   </tr>
                   </thead>
@@ -184,13 +184,13 @@
                       <td>
                           <input type="checkbox" />
                       </td>
-                      <td><%= links[i].lid %></td>
-                      <td><a href="/admin/link-edit/<%= i+1 %>" title="title"><%= links[i].url %></a></td>
-                      <td><%= links[i].content %></td>
+                      <td><%= links.lid %></td>
+                      <td><a href="/admin/link-edit/<%= links.lid %>" title="title"><%= links[i].content %></a></td>
+                      <td><%= links[i].url %></td>
                       <td>
                           <!-- Icons -->
-                          <a href="/admin/link-edit/<%= links[i].lid %>" title="Edit"><img src="/admin/images/icons/pencil.png" alt="Edit" /></a>
-                          <a href="/admin/link-del/<%= links[i].lid %>" title="Delete"><img src="/admin/images/icons/cross.png" alt="Delete" /></a>
+                          <a href="/admin/link-edit/<%= links.lid %>" title="Edit"><img src="/admin/images/icons/pencil.png"  alt="Edit" /></a>
+                          <a href="/admin/link-del/<%= links.lid %>" title="Delete"><img src="/admin/images/icons/cross.png"  alt="Delete" /></a>
                       </td>
                   </tr>
                   <% } %>
