@@ -143,19 +143,20 @@ module.exports = function(app){
         });
     });
 
-	app.get('/gallery/:gid', function (req, res, next) {
-		var gid = parseInt(req.params.gid);
-		Gallery.getOne(gid, function (err, gallery) {
+    app.get('/gallery', function (req, res) {
+        res.redirect('/galleries');
+    })
+	app.get('/galleries', function (req, res) {
+		Gallery.get(0, function (err, gallery) {
 			if (err){
-				req.flash('error', "读取文章错误!");
+				req.flash('error', "读取错误!");
 				return res.redirect('/404');
 			}
 			if (!gallery){
-				req.flash('error', "找不到这篇文章!");
+				req.flash('error', "找不到这条记录!");
 				return res.redirect('/404');
 			}
-			res.render("posts", {
-				title: gallery.title,
+			res.render("galleries", {
 				site: site,
 				user: req.session.user,
 				gallery: gallery,
