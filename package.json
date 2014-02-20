@@ -6,9 +6,9 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "node": "*",
     "express": "*",
     "ejs": "*",
+    "marked": "*",
     "mongodb": "*",
     "connect-mongo": "*",
     "connect-flash": "*"
