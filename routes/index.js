@@ -15,22 +15,22 @@ module.exports = function(app){
     app.get('/', function(req, res){
         Emotion.get(site.indexEmotionAmount, function (err, emotions) {
             if (err) {
-                req.flash('error', "主页心情读取错误!");
+                req.flash('error', "Fetch emotions error!");
                 return res.redirect('/404');
             }
             Post.get(site.indexPostAmount, function (err, posts) {
-				if (err) {
-					req.flash('error', "主页文章读取错误!");
-					return res.redirect('/404');
-				}
-				Gallery.get(site.indexGalleryAmount, function (err, galleries) {
-					if (err) {
-						req.flash('error', "主页相册读取错误!");
-						return res.redirect('/404');
-					}
-					Link.get(site.indexLinkAmount, function (err, links) {
+                if (err) {
+                    req.flash('error', "Fetch posts error!");
+                    return res.redirect('/404');
+                }
+                Gallery.get(site.indexGalleryAmount, function (err, galleries) {
+                    if (err) {
+                        req.flash('error', "Fetch galleries error!");
+                        return res.redirect('/404');
+                    }
+                    Link.get(site.indexLinkAmount, function (err, links) {
 						if (err) {
-							req.flash('error', "主页友链读取错误!");
+							req.flash('error', "Fetch links error!");
 							return res.redirect('/404');
 						}
 						res.render('index', {
@@ -53,16 +53,16 @@ module.exports = function(app){
 		var eid = parseInt(req.params.eid);
 		Emotion.getOne(eid, function (err, emotion) {
 			if (err){
-				req.flash('error', "读取心情错误!");
+				req.flash('error', "Fetch emotions error!!");
 				return res.redirect('/404');
 			}
 			if (!emotion){
-				req.flash('error', "找不到这篇心情!");
+				req.flash('error', "Fetch emotions error!!");
 				return res.redirect('/404');
 			}
             Link.get(site.indexLinkAmount, function(err, links){
                 if (err){
-                    req.flash('error', "友链读取错误!");
+                    req.flash('error', "Fetch links error!!");
                     return res.redirect('/404');
                 }
                 res.render("emotions", {
@@ -85,7 +85,7 @@ module.exports = function(app){
             url = req.body.url,
             content = req.body.content;
         if(!eid){
-            req.flash('error', "内部错误!");
+            req.flash('error', "Sorry, something seems go wrong!!");
             return res.redirect('/emotion/' + eid);
         }
         Emotion.saveComment(eid, qq, name, url, content, function(err){
@@ -93,7 +93,7 @@ module.exports = function(app){
                 req.flash('error', err);
                 return res.redirect('/emotion/' + eid);
             }
-            req.flash('success', "回复成功!");
+            req.flash('success', "Reply Successfully!!");
             return res.redirect('/emotion/' + eid);
         });
     });
@@ -103,11 +103,11 @@ module.exports = function(app){
         Post.getOne(pid, function (err, post) {
         	Link.get(site.indexLinkAmount, function (err, links) {
 				if (err){
-					req.flash('error', "读取文章错误!");
+					req.flash('error', "Fetch posts error!!");
 					return res.redirect('/404');
 				}
 				if (!post){
-					req.flash('error', "找不到这篇文章!");
+					req.flash('error', "Fetch posts error!!");
 					return res.redirect('/404');
 				}
             	res.render("posts", {
@@ -131,14 +131,14 @@ module.exports = function(app){
             content = req.body.content;
         Post.saveComment(pid, qq, name, url, content, function(err){
             if(!pid){
-                req.flash('error', "内部错误!");
+                req.flash('error', "Sorry, something seems go wrong!");
                 return res.redirect('/post/' + pid);
             }
             if(err){
                 req.flash('error', err);
                 return res.redirect('/post/' + pid);
             }
-            req.flash('success', "回复成功!");
+            req.flash('success', "Reply Successfully!");
             return res.redirect('/post/' + pid);
         });
     });
@@ -149,11 +149,11 @@ module.exports = function(app){
 	app.get('/galleries', function (req, res) {
 		Gallery.get(0, function (err, gallery) {
 			if (err){
-				req.flash('error', "读取错误!");
+				req.flash('error', "Fetch galleries error!");
 				return res.redirect('/404');
 			}
 			if (!gallery){
-				req.flash('error', "找不到这条记录!");
+				req.flash('error', "Record not exits!");
 				return res.redirect('/404');
 			}
 			res.render("galleries", {
@@ -179,22 +179,22 @@ module.exports = function(app){
 		}else{
             Emotion.get(0, function (err, emotions) {
                 if (err) {
-                    req.flash('error', "主页心情读取错误!");
+                    req.flash('error', "Fetch emotions error!");
                     return res.redirect('/404');
                 }
                 Post.get(0, function (err, posts) {
                     if (err) {
-                        req.flash('error', "主页文章读取错误!");
+                        req.flash('error', "Fetch posts error!");
                         return res.redirect('/404');
                     }
                     Gallery.get(0, function (err, galleries) {
                         if (err) {
-                            req.flash('error', "主页相册读取错误!");
+                            req.flash('error', "Fetch galleries error!");
                             return res.redirect('/404');
                         }
                         Link.get(0, function (err, links) {
                             if (err) {
-                                req.flash('error', "主页友链读取错误!");
+                                req.flash('error', "Fetch links error!");
                                 return res.redirect('/404');
                             }
                             posts = posts.reverse();
@@ -241,8 +241,8 @@ module.exports = function(app){
 				req.flash('error', err); 
 				return res.redirect('/admin');
 			}
-			req.flash('success', '保存成功!');
-			res.redirect('/admin');  //成功
+			req.flash('success', 'Successful!');
+			res.redirect('/admin');
 		});
 	});
 
@@ -251,22 +251,22 @@ module.exports = function(app){
 
 		User.get(req.body.username, function (err, user) {
 			if(err){
-				req.flash('error', "查询出错!");
+				req.flash('error', "Query Error!");
 				return res.redirect('/admin');
 			}
 
 			if(!user){
-				req.flash('error', '用户不存在!');
+				req.flash('error', 'User not exists!');
 				return res.redirect('/admin');
 			}
 
 			if(user.password != password_md5){
-				req.flash('error', '密码错误!');
+				req.flash('error', 'Password incorrect!');
 				return res.redirect('/admin');
 			}
 
 			req.session.user = 	user;
-			req.flash('success', '登录成功!');
+			req.flash('success', 'Successful!');
 			res.redirect('/admin');
 		});
 	});
@@ -274,7 +274,7 @@ module.exports = function(app){
 	app.get('/admin/logout', function (req, res) {
 		site: site,
 		req.session.user = null;
-		req.flash('success', "登出成功!");
+		req.flash('success', "Successful!");
 		res.redirect('/admin');
 	});
 
@@ -299,8 +299,8 @@ module.exports = function(app){
 					req.flash('error', err); 
 					return res.redirect('/admin');
 				}
-				req.flash('success', '发布成功!');
-				res.redirect('/admin');//发表成功
+				req.flash('success', 'Successful!');
+				res.redirect('/admin');
 			});
 	});
 
@@ -331,11 +331,11 @@ module.exports = function(app){
             content = req.body.content;
         Post.update(pid, title, tags, content, function (err, post){
             if(err){
-                req.flash('error', "update??");
+                req.flash('error', "Sorry, something goes wrong!");
                 return res.redirect('/admin');
             }
-            req.flash('success', '????!');
-            res.redirect('/admin');//????
+            req.flash('success', 'Successful!');
+            res.redirect('/admin');
         });
     });
 
@@ -344,7 +344,7 @@ module.exports = function(app){
         var pid = parseInt(req.params.pid);
         Post.edit(pid, function (err, post) {
             if(err){
-                req.flash('error', "??Post??");
+                req.flash('error', "Sorry, something goes wrong");
                 return res.redirect('/admin');
             }
             res.render('admin/post-del', {
@@ -362,10 +362,10 @@ module.exports = function(app){
         var pid = parseInt(req.params.pid);
         Post.delete(pid, function (err) {
             if(err){
-                req.flash('error', "?????> <!");
+                req.flash('error', "Sorry, something goes wrong!");
                 return res.redirect('/admin');
             }
-            req.flash('success', "????!");
+            req.flash('success', "Successful!");
             res.redirect('/admin');
         });
     });
@@ -389,8 +389,8 @@ module.exports = function(app){
 					req.flash('error', err); 
 					return res.redirect('/admin');
 				}
-				req.flash('success', '发布成功!');
-				res.redirect('/admin');//发表成功
+				req.flash('success', 'Successful!');
+				res.redirect('/admin');
 			});
 	});
 
@@ -399,7 +399,7 @@ module.exports = function(app){
         var eid = parseInt(req.params.eid);
         Emotion.edit(eid, function (err, emotion) {
             if(err || !emotion){
-                req.flash('error', "读取Emotion错误!");
+                req.flash('error', "Sorry, something goes wrong!");
                 res.redirect('/admin');
             }
             return res.render('admin/emotion-edit', {
@@ -419,10 +419,10 @@ module.exports = function(app){
             content = req.body.content;
         Emotion.update(eid, content, function (err) {
             if(err){
-                req.flash('error', "update错误");
+                req.flash('error', "Sorry, something goes wrong");
                 return res.redirect('/admin');
             }
-            req.flash('success', '修改成功!');
+            req.flash('success', 'Successful!');
             res.redirect('/admin');//修改成功
         });
     });
@@ -432,7 +432,7 @@ module.exports = function(app){
         var eid = parseInt(req.params.eid);
         Emotion.edit(eid, function (err, emotion) {
             if(err){
-                req.flash('error', "读取emotion错误");
+                req.flash('error', "Sorry, something goes wrong");
                 return res.redirect('/admin');
             }
             return res.render('admin/emotion-del', {
@@ -450,10 +450,10 @@ module.exports = function(app){
         var eid = parseInt(req.params.eid);
         Emotion.delete(eid, function (err) {
             if(err){
-                req.flash('error', "删除出错了!");
+                req.flash('error', "Sorry, something goes wrong!");
                 return res.redirect('/admin');
             }
-            req.flash('success', "删除成功!");
+            req.flash('success', "Successful!");
             res.redirect('/admin');
         });
     });
@@ -486,7 +486,7 @@ module.exports = function(app){
                 req.flash('error', err);
                 return res.redirect('/admin');
             }
-            req.flash('success', '添加成功!');
+            req.flash('success', 'Successful!');
             res.redirect('/admin/links');//发表成功
         });
     });
@@ -496,7 +496,7 @@ module.exports = function(app){
         var lid = parseInt(req.params.lid);
         Link.edit(lid, function (err, link) {
             if(err || !link){
-                req.flash('error', "读取链接错误!");
+                req.flash('error', "Sorry, something goes wrong!");
                 res.redirect('/admin');
             }
             res.render('admin/link-edit', {
@@ -516,10 +516,10 @@ module.exports = function(app){
             content = req.body.content;
         Link.update(lid, url, content, function (err){
             if(err){
-                req.flash('error', "update错误");
+                req.flash('error', "Sorry, something goes wrong!");
                 return res.redirect('/admin');
             }
-            req.flash('success', '修改成功!');
+            req.flash('success', 'Successful!');
             res.redirect('/admin/links');//修改成功
         });
     });
@@ -529,7 +529,7 @@ module.exports = function(app){
         var lid = parseInt(req.params.lid);
         Link.edit(lid, function (err, link) {
             if(err){
-                req.flash('error', "读取Link错误");
+                req.flash('error', "Sorry, something goes wrong!");
                 return res.redirect('/admin');
             }
             res.render('admin/link-del', {
@@ -547,10 +547,10 @@ module.exports = function(app){
         var lid = parseInt(req.params.lid);
         Link.delete(lid, function (err) {
             if(err){
-                req.flash('error', "删除出错了!");
+                req.flash('error', "Sorry, something goes wrong!");
                 return res.redirect('/admin');
             }
-            req.flash('success', "删除成功!");
+            req.flash('success', "Successful!");
             res.redirect('/admin/links');
         });
     });
@@ -568,7 +568,7 @@ module.exports = function(app){
 			password = req.body.password,
 			password_re = req.body['password-repeat'];
 		if(password != password_re) {
-			req.flash('error', "两次输入的密码不一致!");
+			req.flash('error', "Confirm-password incorrect!");
 			res.redirect('/admin/reg');
 		}
 		var md5 = crypto.createHash('md5'),
@@ -581,7 +581,7 @@ module.exports = function(app){
 
 		User.get(newUser.name, function (err, user) {
 			if(user){
-				req.flash('error', '用户已存在!');
+				req.flash('error', 'User exites!');
 				return res.redirect("/admin/reg");
 			}
 			newUser.save(function (err, user) {
@@ -590,7 +590,7 @@ module.exports = function(app){
         			return res.redirect('/admin/reg');//注册失败返回主册页
 				}
 				req.session.user = user;
-				req.flash('success', '注册成功!');
+				req.flash('success', 'Reg successful!');
 				res.redirect("/admin");
 			});
 		});
@@ -607,7 +607,7 @@ module.exports = function(app){
 
 	function preCheckLogin(req, res, next){
 		if(!req.session.user){
-			req.flash('error', "Pls Login First!");
+			req.flash('error', "Pls Log in First!");
 			return res.redirect('/admin');
 		}
 		next();
