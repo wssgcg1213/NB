@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node nb.js"
   },
   "dependencies": {
     "express": "*",
@@ -11,6 +11,7 @@
     "marked": "*",
     "mongodb": "*",
     "connect-mongo": "*",
-    "connect-flash": "*"
+    "connect-flash": "*",
+    "forever-webui": "~0.1.6"
   }
 }

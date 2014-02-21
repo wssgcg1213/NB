@@ -10,9 +10,9 @@ var Gallery = require('../models/gallery.js');
 var Link = require('../models/link.js');
 var site = require('../siteSettings.js');
 
-module.exports = function(app){
+module.exports = function(nb){
     //主页
-    app.get('/', function(req, res){
+    nb.get('/', function(req, res){
         Emotion.get(site.indexEmotionAmount, function (err, emotions) {
             if (err) {
                 req.flash('error', "Fetch emotions error!");
@@ -49,7 +49,7 @@ module.exports = function(app){
 		});
 	});
 
-	app.get('/emotion/:eid', function (req, res, next) {
+	nb.get('/emotion/:eid', function (req, res, next) {
 		var eid = parseInt(req.params.eid);
 		Emotion.getOne(eid, function (err, emotion) {
 			if (err){
@@ -78,7 +78,7 @@ module.exports = function(app){
             });
 		});
 	});
-    app.post('/emotion/:eid', function (req, res, next){
+    nb.post('/emotion/:eid', function (req, res, next){
         var eid = parseInt(req.params.eid),
             name = req.body.name,
             qq = req.body.qq ? req.body.qq : 0,
@@ -98,7 +98,7 @@ module.exports = function(app){
         });
     });
 
-	app.get('/post/:pid', function (req, res, next) {
+	nb.get('/post/:pid', function (req, res, next) {
 		var pid = parseInt(req.params.pid); 
         Post.getOne(pid, function (err, post) {
         	Link.get(site.indexLinkAmount, function (err, links) {
@@ -123,7 +123,7 @@ module.exports = function(app){
         	});
 		});
 	});
-    app.post('/post/:pid', function (req, res, next){
+    nb.post('/post/:pid', function (req, res, next){
         var pid = parseInt(req.params.pid),
             name = req.body.name,
             qq = req.body.qq ? req.body.qq : 0,
@@ -143,10 +143,10 @@ module.exports = function(app){
         });
     });
 
-    app.get('/gallery', function (req, res) {
+    nb.get('/gallery', function (req, res) {
         res.redirect('/galleries');
     })
-	app.get('/galleries', function (req, res) {
+	nb.get('/galleries', function (req, res) {
 		Gallery.get(0, function (err, gallery) {
 			if (err){
 				req.flash('error', "Fetch galleries error!");
@@ -169,7 +169,7 @@ module.exports = function(app){
 
 
 	//后台部分
-	app.get('/admin', function (req,res) {
+	nb.get('/admin', function (req,res) {
 		if(!req.session.user){
 			res.render('admin/login', {
 				site: site,
@@ -218,8 +218,8 @@ module.exports = function(app){
 		}
 	});
 
-	app.get('/admin/site', preCheckLogin);
-	app.get('/admin/site', function (req, res) {
+	nb.get('/admin/site', preCheckLogin);
+	nb.get('/admin/site', function (req, res) {
 		res.render('admin/site', {
 			site: site,
 			user: req.session.user,
@@ -228,8 +228,8 @@ module.exports = function(app){
 		});
 	});
 
-	app.post('/admin/site', preCheckLogin);
-	app.post('/admin/site', function (req, res) {
+	nb.post('/admin/site', preCheckLogin);
+	nb.post('/admin/site', function (req, res) {
 		var siteinfo = {
 				title: req.body.site_title,
 				subtitle: req.body.site_subtitle,
@@ -246,7 +246,7 @@ module.exports = function(app){
 		});
 	});
 
-	app.post("/admin/login", function (req, res) {
+	nb.post("/admin/login", function (req, res) {
 		var password_md5 = crypto.createHash('md5').update(req.body.password).digest('hex');
 
 		User.get(req.body.username, function (err, user) {
@@ -271,15 +271,15 @@ module.exports = function(app){
 		});
 	});
 
-	app.get('/admin/logout', function (req, res) {
+	nb.get('/admin/logout', function (req, res) {
 		site: site,
 		req.session.user = null;
 		req.flash('success', "Successful!");
 		res.redirect('/admin');
 	});
 
-	app.get('/admin/posts', preCheckLogin);
-	app.get('/admin/posts', function (req, res) {
+	nb.get('/admin/posts', preCheckLogin);
+	nb.get('/admin/posts', function (req, res) {
 		res.render('admin/posts', {
 			site: site,
 			user: req.session.user,
@@ -288,8 +288,8 @@ module.exports = function(app){
 		});
 	});
 
-	app.post('/admin/posts', preCheckLogin);
-	app.post('/admin/posts', function (req, res) {
+	nb.post('/admin/posts', preCheckLogin);
+	nb.post('/admin/posts', function (req, res) {
 		var title = req.body.title,
 			tags = req.body.tags.split(",") ? req.body.tags.split(",") : req.body.tags.split("|"),
 			content = req.body.content,
@@ -304,8 +304,8 @@ module.exports = function(app){
 			});
 	});
 
-    app.get('/admin/post-edit/:pid', preCheckLogin);
-    app.get('/admin/post-edit/:pid', function (req, res) {
+    nb.get('/admin/post-edit/:pid', preCheckLogin);
+    nb.get('/admin/post-edit/:pid', function (req, res) {
         var pid = parseInt(req.params.pid);
         Post.edit(pid, function (err, post) {
             if(err || !post){
@@ -323,8 +323,8 @@ module.exports = function(app){
         });
     });
 
-    app.post('/admin/post-edit/:pid', preCheckLogin);
-    app.post('/admin/post-edit/:pid', function (req, res) {
+    nb.post('/admin/post-edit/:pid', preCheckLogin);
+    nb.post('/admin/post-edit/:pid', function (req, res) {
         var pid = parseInt(req.params.pid),
             title = req.body.title,
             tags = req.body.tags.split(",") ? req.body.tags.split(",") : req.body.tags.split("|"),
@@ -339,8 +339,8 @@ module.exports = function(app){
         });
     });
 
-    app.get('/admin/post-del/:pid', preCheckLogin);
-    app.get('/admin/post-del/:pid', function (req, res) {
+    nb.get('/admin/post-del/:pid', preCheckLogin);
+    nb.get('/admin/post-del/:pid', function (req, res) {
         var pid = parseInt(req.params.pid);
         Post.edit(pid, function (err, post) {
             if(err){
@@ -357,8 +357,8 @@ module.exports = function(app){
         });
     });
 
-    app.post('/admin/post-del/:pid', preCheckLogin);
-    app.post('/admin/post-del/:pid', function (req, res) {
+    nb.post('/admin/post-del/:pid', preCheckLogin);
+    nb.post('/admin/post-del/:pid', function (req, res) {
         var pid = parseInt(req.params.pid);
         Post.delete(pid, function (err) {
             if(err){
@@ -370,8 +370,8 @@ module.exports = function(app){
         });
     });
 
-	app.get('/admin/emotions', preCheckLogin);
-	app.get('/admin/emotions', function (req, res) {
+	nb.get('/admin/emotions', preCheckLogin);
+	nb.get('/admin/emotions', function (req, res) {
 		res.render('admin/emotions', {
 			site: site,
 			user: req.session.user,
@@ -380,8 +380,8 @@ module.exports = function(app){
 		});
 	});
 
-	app.post('/admin/emotions', preCheckLogin);
-	app.post('/admin/emotions', function (req, res) {
+	nb.post('/admin/emotions', preCheckLogin);
+	nb.post('/admin/emotions', function (req, res) {
 		var content = req.body.content,
 			emotion = new Emotion(content);
 			emotion.save(function (err){
@@ -394,8 +394,8 @@ module.exports = function(app){
 			});
 	});
 
-    app.get('/admin/emotion-edit/:eid', preCheckLogin);
-    app.get('/admin/emotion-edit/:eid', function (req, res) {
+    nb.get('/admin/emotion-edit/:eid', preCheckLogin);
+    nb.get('/admin/emotion-edit/:eid', function (req, res) {
         var eid = parseInt(req.params.eid);
         Emotion.edit(eid, function (err, emotion) {
             if(err || !emotion){
@@ -413,8 +413,8 @@ module.exports = function(app){
 
     });
 
-    app.post('/admin/emotion-edit/:eid', preCheckLogin);
-    app.post('/admin/emotion-edit/:eid', function (req, res) {
+    nb.post('/admin/emotion-edit/:eid', preCheckLogin);
+    nb.post('/admin/emotion-edit/:eid', function (req, res) {
         var eid = parseInt(req.params.eid),
             content = req.body.content;
         Emotion.update(eid, content, function (err) {
@@ -427,8 +427,8 @@ module.exports = function(app){
         });
     });
 
-    app.get('/admin/emotion-del/:eid', preCheckLogin);
-    app.get('/admin/emotion-del/:eid', function (req, res) {
+    nb.get('/admin/emotion-del/:eid', preCheckLogin);
+    nb.get('/admin/emotion-del/:eid', function (req, res) {
         var eid = parseInt(req.params.eid);
         Emotion.edit(eid, function (err, emotion) {
             if(err){
@@ -445,8 +445,8 @@ module.exports = function(app){
         });
     });
 
-    app.post('/admin/emotion-del/:eid', preCheckLogin);
-    app.post('/admin/emotion-del/:eid', function (req, res) {
+    nb.post('/admin/emotion-del/:eid', preCheckLogin);
+    nb.post('/admin/emotion-del/:eid', function (req, res) {
         var eid = parseInt(req.params.eid);
         Emotion.delete(eid, function (err) {
             if(err){
@@ -458,8 +458,8 @@ module.exports = function(app){
         });
     });
 
-    app.get('/admin/links', preCheckLogin);
-    app.get('/admin/links', function (req, res) {
+    nb.get('/admin/links', preCheckLogin);
+    nb.get('/admin/links', function (req, res) {
         Link.get(0, function (err, links) {
             if(err){
                 req.flash('error', err);
@@ -476,8 +476,8 @@ module.exports = function(app){
         });
     });
 
-    app.post('/admin/links', preCheckLogin);
-    app.post('/admin/links', function (req, res) {
+    nb.post('/admin/links', preCheckLogin);
+    nb.post('/admin/links', function (req, res) {
         var url = req.body.url,
             content = req.body.content,
             link = new Link(url, content);
@@ -491,8 +491,8 @@ module.exports = function(app){
         });
     });
 
-    app.get('/admin/link-edit/:lid', preCheckLogin);
-    app.get('/admin/link-edit/:lid', function (req, res) {
+    nb.get('/admin/link-edit/:lid', preCheckLogin);
+    nb.get('/admin/link-edit/:lid', function (req, res) {
         var lid = parseInt(req.params.lid);
         Link.edit(lid, function (err, link) {
             if(err || !link){
@@ -509,8 +509,8 @@ module.exports = function(app){
         });
     });
 
-    app.post('/admin/link-edit/:lid', preCheckLogin);
-    app.post('/admin/link-edit/:lid', function (req, res) {
+    nb.post('/admin/link-edit/:lid', preCheckLogin);
+    nb.post('/admin/link-edit/:lid', function (req, res) {
         var lid = parseInt(req.params.lid),
             url = req.body.url,
             content = req.body.content;
@@ -524,8 +524,8 @@ module.exports = function(app){
         });
     });
 
-    app.get('/admin/link-del/:lid', preCheckLogin);
-    app.get('/admin/link-del/:lid', function (req, res) {
+    nb.get('/admin/link-del/:lid', preCheckLogin);
+    nb.get('/admin/link-del/:lid', function (req, res) {
         var lid = parseInt(req.params.lid);
         Link.edit(lid, function (err, link) {
             if(err){
@@ -542,8 +542,8 @@ module.exports = function(app){
         });
     });
 
-    app.post('/admin/link-del/:lid', preCheckLogin);
-    app.post('/admin/link-del/:lid', function (req, res) {
+    nb.post('/admin/link-del/:lid', preCheckLogin);
+    nb.post('/admin/link-del/:lid', function (req, res) {
         var lid = parseInt(req.params.lid);
         Link.delete(lid, function (err) {
             if(err){
@@ -555,7 +555,7 @@ module.exports = function(app){
         });
     });
 
-	app.get('/admin/reg', function (req, res) {
+	nb.get('/admin/reg', function (req, res) {
     	res.render('admin/reg', {
     		site: site,
     		success: req.flash('success').toString(),
@@ -563,7 +563,7 @@ module.exports = function(app){
     	});
   	});
 
-	app.post('/admin/reg', function (req, res) {
+	nb.post('/admin/reg', function (req, res) {
 		var name = req.body.name,
 			password = req.body.password,
 			password_re = req.body['password-repeat'];
@@ -597,7 +597,7 @@ module.exports = function(app){
 	});
 
 	//404
-	app.use(function(req, res) {
+	nb.use(function(req, res) {
         res.render('404', {
        	site: site,
         success: req.flash('success').toString(),
