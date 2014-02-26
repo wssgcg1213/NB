@@ -2,7 +2,7 @@
  * post (文章)模型
  */
 
-var mongodb = require('./db'),
+var mongo = require('./db'),
     marked = require('marked'),
     getTime = require('./gettime');
 
@@ -46,12 +46,12 @@ Post.prototype.save = function (callback){
 		tags: this.tags
 	};
 	//开库
-	mongodb.open(function (err, db){
+    mongo(function (err, db){
 		if(err) return callback(err);
 		//读
-        mongodb.collection('posts', function (err, collection){
+        db.collection('posts', function (err, collection){
 			if(err){
-                mongodb.close();
+                db.close();
 				return callback(err);
 			}
             collection.find({}, {sort: {pid: -1}, limit:1}).toArray(function(err, last){
@@ -73,24 +73,24 @@ Post.prototype.save = function (callback){
  * @return {[type]}            [description]
  */
 Post.getOne = function(pid, callback){
-	mongodb.open(function (err, db){
+    mongo(function (err, db){
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('posts', function (err, collection){
 			if (err){
-                mongodb.close();
+                db.close();
 				return callback(err);
 			}
 			collection.findOne({'pid': pid}, function (err, doc){
 				if(err){
-                    mongodb.close();
+                    db.close();
 					return callback(err);
 				}
 				if(doc){
 					collection.update({'pid': pid}, {$inc: {'pv': 1}}, function (err){  //pv++
-                        mongodb.close();
+                        db.close();
 						if(err) return callback(err);
 						marked(doc.content, function (err, content){
 							if(err) throw err;
@@ -105,7 +105,7 @@ Post.getOne = function(pid, callback){
 						});
 					});	
 				}else{
-					mongodb.close();
+					db.close();
 					callback(null, null);   //no post
 				}
 			});
@@ -119,19 +119,19 @@ Post.getOne = function(pid, callback){
  * @param  {Function} callback [回调函数]
  */
 Post.get = function (amount, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('posts', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.count({}, function (err, total) {
 				if(err){
-					mongodb.close();
+					db.close();
 					return callback(err);
 				}
 				var skip = 0;
@@ -139,7 +139,7 @@ Post.get = function (amount, callback) {
 					skip: skip,
 					limit: amount
 				}).sort({pid: -1}).toArray(function (err, docs) {
-					mongodb.close();
+					db.close();
 					if(err) return callback(err);
 					docs.forEach(function (doc) {
 						doc.titlesub = doc.title.sub(14);
@@ -161,22 +161,22 @@ Post.get = function (amount, callback) {
  * @param  {Function} callback [回调函数]
  */
 Post.edit = function (pid, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('posts', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.findOne({'pid': pid}, function (err, doc) {
 				if(err){
-					mongodb.close();
+					db.close();
 					return callback(err);
 				}
-                mongodb.close();
+                db.close();
 				if(doc){
 					callback(null, doc);
 				}else{
@@ -197,14 +197,14 @@ Post.edit = function (pid, callback) {
  * @param  {Function} callback [回调函数]
  */
 Post.update = function (pid, title, tags, content, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('posts', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.update({'pid': pid}, {$set: {
@@ -212,7 +212,7 @@ Post.update = function (pid, title, tags, content, callback) {
                 tags: tags,
                 content: content
             }}, function (err, post) {
-				mongodb.close();
+				db.close();
 				if(err) return callback(err);
 				callback(null, post);
 			});
@@ -228,14 +228,14 @@ Post.saveComment = function (pid, qq, name, url, content, callback){
     if(!content){
         return callback("请检查内容!");
     }
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if(err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('posts', function (err, collection) {
             if (err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.update({'pid': pid}, {$push: {
@@ -247,7 +247,7 @@ Post.saveComment = function (pid, qq, name, url, content, callback){
                     time: time
                 }
             }}, function (err) {
-                mongodb.close();
+                db.close();
                 if (err) return callback(err);
                 callback(null);
             })
@@ -256,18 +256,18 @@ Post.saveComment = function (pid, qq, name, url, content, callback){
 };
 
 Post.delete = function (pid, callback) {
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if(err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('posts', function (err, collection) {
             if (err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.remove({pid: pid}, function (err){
-                mongodb.close();
+                db.close();
                 if(err) return callback(err);
                 callback(null);
             });

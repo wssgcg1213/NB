@@ -11,6 +11,7 @@ var site = {
 	indexPostAmount: 3,
 	indexGalleryAmount: 3,
 	indexLinkAmount: 21,
+    qzonelogo: "http://33967.vhost52.boxcdn.cn/qzonelogo.php?uin=",
 };
 
 module.exports = site;

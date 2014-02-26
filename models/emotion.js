@@ -3,7 +3,7 @@
  * 这里不用markdown
  */
 
-var mongodb = require('./db'),
+var mongo = require('./db'),
     getTime = require('./gettime');
 
 function Emotion(content) {
@@ -23,12 +23,12 @@ Emotion.prototype.save = function (callback){
 		pv: 0
 	};
 	//开库
-	mongodb.open(function (err, db){
+    mongo(function (err, db){
 		if(err) return callback(err);
 		//读
 		db.collection('emotions', function (err, collection){
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
             collection.find({}, {sort: {eid: -1}, limit:1}).toArray(function(err, last){
@@ -50,19 +50,19 @@ Emotion.prototype.save = function (callback){
  * @return {[type]}            [description]
  */
 Emotion.get = function (amount, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('emotions', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.count({}, function (err, total) {
 				if(err){
-					mongodb.close();
+					db.close();
 					return callback(err);
 				}
 				var skip = 0;
@@ -70,7 +70,7 @@ Emotion.get = function (amount, callback) {
 					skip: skip,
 					limit: amount
 				}).sort({eid: -1}).toArray(function (err, docs) {
-					mongodb.close();
+					db.close();
 					if(err) return callback(err);
 					callback(null, docs);
 				});
@@ -87,29 +87,29 @@ Emotion.get = function (amount, callback) {
  */
 
 Emotion.getOne = function (eid, callback) {
-	mongodb.open(function (err, db) {
+	mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('emotions', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.findOne({'eid': eid}, function (err, doc) {
 				if(err){
-					mongodb.close();
+					db.close();
 					return callback(err);
 				}
 				if(doc){
 					collection.update({'eid': eid}, {$inc: {'pv': 1}}, function (err){  //pv++
-						mongodb.close();
+						db.close();
 						if(err) return callback(err);
 						callback(null, doc);
 					});
 				}else{
-                    mongodb.close();
+                    db.close();
 					callback(null, null);
 				}
 			});
@@ -126,14 +126,14 @@ Emotion.saveComment = function (eid, qq, name, url, content, callback){
     if(!content){
         return callback("请检查内容!");
     }
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if(err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('emotions', function (err, collection) {
             if (err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.update({'eid': eid}, {$push: {
@@ -145,7 +145,7 @@ Emotion.saveComment = function (eid, qq, name, url, content, callback){
                     time: time
                 }
             }}, function (err) {
-                mongodb.close();
+                db.close();
                 if (err) return callback(err);
                 callback(null);
             })
@@ -160,18 +160,18 @@ Emotion.saveComment = function (eid, qq, name, url, content, callback){
  * @param callback
  */
 Emotion.update = function (eid, content, callback) {
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if (err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('emotions', function (err, collection) {
             if (err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.update({eid: eid}, {$set: {content: content}}, function (err, emotion) {
-                mongodb.close();
+                db.close();
                 if(err) return callback(err);
                 callback(null, emotion);
             })
@@ -185,18 +185,18 @@ Emotion.update = function (eid, content, callback) {
  * @param callback
  */
 Emotion.edit = function (eid, callback) {
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if (err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('emotions', function (err, collection) {
             if (err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.findOne({eid: eid}, function (err, emotion) {
-                mongodb.close();
+                db.close();
                 if(err) return callback(err);
                 callback(null, emotion);
             })
@@ -210,18 +210,18 @@ Emotion.edit = function (eid, callback) {
  * @param callback
  */
 Emotion.delete = function (eid, callback) {
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if (err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('emotions', function (err, collection) {
             if (err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.remove({eid: eid}, function (err) {
-                mongodb.close();
+                db.close();
                 if(err) return callback(err);
                 callback(null);
             })

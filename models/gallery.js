@@ -2,7 +2,7 @@
  * gallery 模型
  */
 
-var mongodb = require('./db'),
+var mongo = require('./db'),
     marked = require('marked'),
     getTime = require('./gettime');
 
@@ -26,12 +26,12 @@ Gallery.prototype.save = function (callback){
 		pv: 0,
 	};
 	//开库
-	mongodb.open(function (err, db){
+    mongo(function (err, db){
 		if(err) return callback(err);
 		//读
 		db.collection('gallerys', function (err, collection){
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
             collection.find({}, {sort: {gid: -1}, limit:1}).toArray(function(err, last){
@@ -53,24 +53,24 @@ Gallery.prototype.save = function (callback){
  * @return {[type]}            [description]
  */
 Gallery.getOne = function(gid, callback){
-	mongodb.open(function (err, db){
+    mongo(function (err, db){
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('gallerys', function (err, collection){
 			if (err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.findOne({'gid': gid}, function (err, doc){
 				if(err){
-					mongodb.close();
+					db.close();
 					return callback(err);
 				}
 				if(doc){
 					collection.update({'gid': gid}, {$inc: {'pv': 1}}, function (err){  //pv++
-						mongodb.close();
+						db.close();
 						if(err) return callback(err);
                         marked(doc.content, function (err, content){
                             if(err) return console.log(err);
@@ -86,7 +86,7 @@ Gallery.getOne = function(gid, callback){
                         callback(null, doc);
 					});
 				}else{
-                    mongodb.close();
+                    db.close();
 					callback(null, null);   //no gallery
 				}
 			});
@@ -101,19 +101,19 @@ Gallery.getOne = function(gid, callback){
  * @return {[type]}            [description]
  */
 Gallery.get = function (amount, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('gallerys', function (err, collection) {
 			if(err){
-				mongodb.close();
+                db.close();
 				return callback(err);
 			}
 			collection.count({}, function (err, total) {
 				if(err){
-					mongodb.close();
+					db.close();
 					return callback(err);
 				}
 				var skip = 0;
@@ -121,7 +121,7 @@ Gallery.get = function (amount, callback) {
 					skip: skip,
 					limit: amount
 				}).sort({gid: -1}).toArray(function (err, docs) {
-					mongodb.close();
+					db.close();
 					if(err) return callback(err);
 					docs.forEach(function (doc) {
 						marked(doc.content, function (err, content){
@@ -143,18 +143,18 @@ Gallery.get = function (amount, callback) {
  * @return {[type]}            [description]
  */
 Gallery.edit = function (gid, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('gallerys', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.findOne({'gid': gid}, function (err, doc) {
-                mongodb.close();
+                db.close();
 				if(err) return callback(err);
 				if(doc) return callback(null, doc);
                 callback(null, null);
@@ -165,14 +165,14 @@ Gallery.edit = function (gid, callback) {
 
 
 Gallery.update = function (gid, url, content, time, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('gallerys', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.update({'gid': gid}, {$set: {
@@ -180,7 +180,7 @@ Gallery.update = function (gid, url, content, time, callback) {
 				content: content,
 				time: time
 			}}, function (err) {
-				mongodb.close();
+				db.close();
 				if(err) return callback(err);
 				callback(null);
 			});

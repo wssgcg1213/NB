@@ -2,7 +2,7 @@
  * link 模型
  */
 
-var mongodb = require('./db');
+var mongo = require('./db');
     marked = require('marked');
 
 function Link(url, content) {
@@ -19,12 +19,12 @@ Link.prototype.save = function (callback){
 		content: this.content
 	};
 	//开库
-	mongodb.open(function (err, db){
+    mongo(function (err, db){
 		if(err) return callback(err);
 		//读
 		db.collection('links', function (err, collection){
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
             collection.find({}, {sort: {lid: -1}, limit:1}).toArray(function(err, last){
@@ -46,21 +46,21 @@ Link.prototype.save = function (callback){
  * @return {[type]}            [description]
  */
 Link.get = function (amount, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('links', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
             collection.find({}, {
                 skip: 0,
                 limit: amount
             }).sort({lid: -1}).toArray(function (err, docs) {
-                mongodb.close();
+                db.close();
                 if(err) return callback(err);
                 callback(null, docs);
             });
@@ -75,18 +75,18 @@ Link.get = function (amount, callback) {
  * @return {[type]}            [description]
  */
 Link.getOne = function (lid, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('links', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.findOne({'lid': lid}, function (err, doc) {
-                mongodb.close();
+                db.close();
 				if(err){
 					return callback(err);
 				}
@@ -103,21 +103,21 @@ Link.getOne = function (lid, callback) {
 Link.edit = Link.getOne;
 
 Link.update = function (lid, url, content, callback) {
-	mongodb.open(function (err, db) {
+    mongo(function (err, db) {
 		if(err){
-			mongodb.close();
+			db.close();
 			return callback(err);
 		}
 		db.collection('links', function (err, collection) {
 			if(err){
-				mongodb.close();
+				db.close();
 				return callback(err);
 			}
 			collection.update({'lid': lid}, {$set: {
 				url: url,
 				content: content
 			}}, function (err) {
-				mongodb.close();
+				db.close();
 				if(err) return callback(err);
 				callback(null);
 			});
@@ -126,18 +126,18 @@ Link.update = function (lid, url, content, callback) {
 };
 
 Link.delete = function (lid, callback) {
-    mongodb.open(function (err, db) {
+    mongo(function (err, db) {
         if(err){
-            mongodb.close();
+            db.close();
             return callback(err);
         }
         db.collection('links', function (err, collection) {
             if(err){
-                mongodb.close();
+                db.close();
                 return callback(err);
             }
             collection.remove({lid: lid}, function (err) {
-                mongodb.close();
+                db.close();
                 if(err) return callback(err);
                 callback(null);
             });

@@ -20,14 +20,14 @@
                             </div>
                         </div>
                         <textarea name="content" onclick="document.getElementById('click-show').style.height='150px'" cols="30" rows="10" placeholder="写点什么把..."></textarea>
-                        <a class="btn" id="submit" href="##" onclick="document.getElementsByTagName('form')[0].submit()">提交!</a>
+                        <a class="btn" href="##" id="submit">提交!</a>
                     </form>
                 </div>
                  <ol class="comment-list">
                      <% for(var j = 0; j<comments.length; j++){ %>
                      <li class="comment-cell" id="div-comment">
                          <div class="comment-author">
-                             <img src="http://33967.vhost52.boxcdn.cn/qzonelogo.php?uin=<%= comments[j].qq %>" class="avatar">
+                             <img src="<%= site.qzonelogo %><%= comments[j].qq %>" class="avatar">
                              <strong><%= comments[j].name %></strong> :
                              <span class="datetime"><%= comments[j].time.minute %></span>
                          </div>
@@ -40,3 +40,4 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="/javascripts/comment.js"></script>

@@ -9,6 +9,7 @@ var Post = require('../models/post.js');
 var Gallery = require('../models/gallery.js');
 var Link = require('../models/link.js');
 var site = require('../siteSettings.js');
+var getTime = require('../models/gettime.js');
 
 module.exports = function(nb){
     //主页
@@ -135,11 +136,22 @@ module.exports = function(nb){
                 return res.redirect('/post/' + pid);
             }
             if(err){
-                req.flash('error', err);
-                return res.redirect('/post/' + pid);
+                var respond = {
+                    status: 0,
+                    info: err
+                }
+                return res.end(JSON.stringify(respond));
             }
-            req.flash('success', "Reply Successfully!");
-            return res.redirect('/post/' + pid);
+            var respond = {
+                status: 1,
+                content: content,
+                qq: qq,
+                name: name,
+                url: url,
+                time: getTime(),
+                info: "Reply Successfully!"
+            }
+            return res.end(JSON.stringify(respond));
         });
     });
 
