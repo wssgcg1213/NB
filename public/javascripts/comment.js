@@ -24,7 +24,6 @@
             "名字都不好好填!",
             "检查一下评论内容啦!"
         ],
-        $ = function(e){return d.getElementById(e)},
         v = function(e,c){
             if(c) d.getElementsByTagName("form")[0][e].value = c;
             return d.getElementsByTagName("form")[0][e].value
@@ -55,6 +54,7 @@
             li.appendChild(p);
             li.appendChild(clear);
             d.getElementsByTagName("ol")[0].appendChild(li);
+            Scroller.goTo($(".comment-list")[0].lastElementChild);
             d.getElementsByTagName("form")[0].reset();
         };
 
@@ -78,6 +78,6 @@
             }
         });
     };
-    if($("submit"))
-        $("submit").on('click', replyComment);
+    if($("#submit"))
+        $("#submit").on('click', replyComment);
 })(document);

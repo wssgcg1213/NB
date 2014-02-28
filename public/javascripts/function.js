@@ -2,7 +2,7 @@
  * [Ajax Construction Function]
  * By ZeroLing.com
  */
-function Ajax() {
+function Ajax () {
     "use strict";
     var aja = {};
     aja.tarUrl = '';
@@ -45,4 +45,94 @@ function Ajax() {
         aja.xhr.send(aja.postString);
     }
     return aja;
+}
+
+/**
+ * Tool Function: Selector
+ * @param str
+ * @returns {*}
+ */
+function $ (str) {
+    if(!str)return "false";
+    if(str[0]=="#"){return document.getElementById(str.split("#")[1]);}
+    if(str[0]=="."){return document.getElementsByClassName(str.split(".")[1]);}
+    return document.getElementsByTagName(str);
+}
+
+var Scroller = {};
+/**
+ * 获取页面当前Scroll位置
+ * @returns {{t: *, l: *, w: *, h: *}}
+ */
+Scroller.getScroll = function () {
+    var t, l, w, h;
+
+    if (document.documentElement && document.documentElement.scrollTop) {
+        t = document.documentElement.scrollTop;
+        l = document.documentElement.scrollLeft;
+        w = document.documentElement.scrollWidth;
+        h = document.documentElement.scrollHeight;
+    } else if (document.body) {
+        t = document.body.scrollTop;
+        l = document.body.scrollLeft;
+        w = document.body.scrollWidth;
+        h = document.body.scrollHeight;
+    }
+    this.t = t;
+    this.l = l;
+    this.w = w;
+    this.h = h;
+    return { t: t, l: l, w: w, h: h};
+}
+
+/**
+ * 滚动到offsetTop位置
+ * @param pos
+ */
+Scroller.scrollTo = function (pos) {
+    if (document.documentElement && document.documentElement.scrollTop) {
+        document.documentElement.scrollTop = pos;
+    }else if(document.body) {
+        document.body.scrollTop = pos;
+    }
+}
+
+/**
+ * 滚到某个元素的位置
+ * @param ele
+ */
+Scroller.goTo = function (ele) {
+    this.getScroll();
+    var that = this,
+        pos = ele.offsetTop;
+    if(!pos){return console.log("%cScroller: NO ELE TO SCROLL TO!", "color:red");}
+    this.pos = pos;
+    if(this.t == pos || this.h - this.t == window.innerHeight) {
+        this.bezierT = 0;
+        this.bezier = 0;
+        return
+    }
+    this.scrollTo(this.curve());
+    setTimeout(function(){that.goTo(ele)}, 20);
+}
+
+/**
+ * 贝塞尔曲线
+ * @returns {*}
+ */
+Scroller.curve = function () {
+    if(!this.bezierT)this.bezierT = 0;
+    if(this.bezierT >= 0.9){
+        if(this.bezierT >=0.95)
+            this.bezierT += 0.005;
+        else this.bezierT += 0.01;
+    }else this.bezierT += 0.05;
+
+    var p0 = this.t,
+        p1 = this.t,
+        p2 = this.pos,
+        t = this.bezierT,
+        bezier = (1-t)*(1-t)*p0 + 2*t*(1-t)*p1 + t*t*p2;
+    this.bezier = bezier;
+    return bezier;
 }

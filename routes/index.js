@@ -85,17 +85,31 @@ module.exports = function(nb){
             qq = req.body.qq ? req.body.qq : 0,
             url = req.body.url,
             content = req.body.content;
-        if(!eid){
-            req.flash('error', "Sorry, something seems go wrong!!");
-            return res.redirect('/emotion/' + eid);
-        }
         Emotion.saveComment(eid, qq, name, url, content, function(err){
-            if(err){
-                req.flash('error', err);
-                return res.redirect('/emotion/' + eid);
+            if(!eid){
+                var respond = {
+                    status: 0,
+                    info: "Sorry, something seems go wrong!"
+                }
+                return res.end(JSON.stringify(respond));
             }
-            req.flash('success', "Reply Successfully!!");
-            return res.redirect('/emotion/' + eid);
+            if(err){
+                var respond = {
+                    status: 0,
+                    info: err
+                }
+                return res.end(JSON.stringify(respond));
+            }
+            var respond = {
+                status: 1,
+                content: content,
+                qq: qq,
+                name: name,
+                url: url,
+                time: getTime(),
+                info: "Reply Successfully!"
+            }
+            return res.end(JSON.stringify(respond));
         });
     });
 
@@ -132,8 +146,11 @@ module.exports = function(nb){
             content = req.body.content;
         Post.saveComment(pid, qq, name, url, content, function(err){
             if(!pid){
-                req.flash('error', "Sorry, something seems go wrong!");
-                return res.redirect('/post/' + pid);
+                var respond = {
+                    status: 0,
+                    info: "Sorry, something seems go wrong!"
+                }
+                return res.end(JSON.stringify(respond));
             }
             if(err){
                 var respond = {
