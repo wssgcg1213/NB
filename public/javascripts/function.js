@@ -104,7 +104,7 @@ Scroller.scrollTo = function (pos) {
 Scroller.goTo = function (ele) {
     this.getScroll();
     var that = this,
-        pos = ele.offsetTop;
+        pos = ele.offsetTop + ele.offsetParent.offsetTop;
     if(!pos){return console.log("%cScroller: NO ELE TO SCROLL TO!", "color:red");}
     this.pos = pos;
     if(this.t == pos || this.h - this.t == window.innerHeight) {
