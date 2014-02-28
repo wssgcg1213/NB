@@ -1,8 +1,9 @@
 
 .idea/
+.git/
 
 access.log
 
 error.log
 
-nb.js
+
