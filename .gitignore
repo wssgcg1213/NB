@@ -1,7 +1,7 @@
 
 .idea/
 .git/
-public/images/head/
+public/images/head/*
 
 access.log
 
