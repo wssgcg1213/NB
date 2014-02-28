@@ -29,7 +29,7 @@
             return d.getElementsByTagName("form")[0][e].value
         },
         addComment = function(r){
-            var qzonelogo = "http://33967.vhost52.boxcdn.cn/qzonelogo.php?uin=",
+            var qzonelogo = "/images/head/" + r.qq + ".png",
                 li = d.createElement("li"),
                 div = d.createElement("div"),
                 avatar = d.createElement("img"),
@@ -41,7 +41,7 @@
             li.className = "comment-cell";
             div.className = "comment-author";
             avatar.className = "avatar";
-            avatar.src = qzonelogo + r.qq,
+            avatar.src = qzonelogo,
             span.className = "datetime";
             clear.className = "clear";
             p.appendChild(d.createTextNode(r.content));
@@ -56,8 +56,14 @@
             d.getElementsByTagName("ol")[0].appendChild(li);
             Scroller.goTo($(".comment-list")[0].lastElementChild);
             d.getElementsByTagName("form")[0].reset();
+            var avatars = $(".avatar");
+            inv = setInterval(function(){
+                if(avatars[avatars.length-1].naturalWidth)return clearInterval(inv);
+                if(avatars[avatars.length-1].naturalWidth == 0 ){
+                    avatars[avatars.length-1].src = avatars[avatars.length-1].src;
+                }
+            }, 500);
         };
-
 
     var replyComment = function(e){
         if(!v("name")){

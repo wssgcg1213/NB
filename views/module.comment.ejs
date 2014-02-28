@@ -27,7 +27,7 @@
                      <% for(var j = 0; j<comments.length; j++){ %>
                      <li class="comment-cell" id="div-comment">
                          <div class="comment-author">
-                             <img src="<%= site.qzonelogo %><%= comments[j].qq %>" class="avatar">
+                             <img src="/images/head/<%= comments[j].qq %>.png" class="avatar">
                              <strong><%= comments[j].name %></strong> :
                              <span class="datetime"><%= comments[j].time.minute %></span>
                          </div>

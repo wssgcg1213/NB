@@ -117,6 +117,21 @@ Emotion.getOne = function (eid, callback) {
 	});
 };
 
+var saveImg = function (res, name) {
+    var _fullname = "./public/images/head/" + name + ".png";
+    var imagedata = '';
+    res.setEncoding('binary');
+    res.on('data', function(chunk){
+        imagedata += chunk;
+    });
+    res.on('end', function(){
+        require('fs').writeFile(_fullname, imagedata, 'binary', function (err) {
+            if (err) console.log(err);
+            console.log("Saving " + name + ".png OK!");
+            return
+        });
+    });
+}
 
 Emotion.saveComment = function (eid, qq, name, url, content, callback){
     var time = getTime();
@@ -126,6 +141,14 @@ Emotion.saveComment = function (eid, qq, name, url, content, callback){
     if(!content){
         return callback("请检查内容!");
     }
+    var _qq = qq ? qq : "10000",
+        url = "http://qlogo4.store.qq.com/qzonelogo/" + _qq + "/1/0",
+        _fullname = "./public/images/head/" + _qq + ".png";
+    if(!require('fs').existsSync(_fullname)){
+        require("http").get(url, function (r) {
+            saveImg(r, _qq);
+        });
+    };
     mongo(function (err, db) {
         if(err){
             db.close();
