@@ -1,6 +1,6 @@
 html,body,div,p,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,input,select,button,textarea,iframe,table,th,td,blockquote{margin:0;padding:0;}
 body{
-	font-family: "Microsoft YaHei", Arial, Verdana, Sans-Serif;
+	font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, Verdana, Sans-Serif;
 	font-size:62.5%;
 	color:#000;
 	position:relative;
@@ -187,6 +187,98 @@ li{
 		margin-left: 20px;
 	}
 	.post-content{
+		//********MD
+		li {
+			margin-left: 50px;
+			list-style: initial;
+			line-height: 35px;
+		}
+		table {
+			margin: 10px 0 15px 0;
+			border-collapse: collapse;
+		}
+		td,th {	
+			border: 1px solid #ddd;
+			padding: 3px 10px;
+		}
+		th {
+			padding: 5px 10px;	
+		}
+		
+		a {
+		    color: #FF69d6!important;
+		}
+		a:hover {
+		    color: #0050a3;
+		}
+		a img {
+		    border: none;
+		}
+		p {
+			text-indent: 0!important;
+		    margin-bottom: 9px!important;
+		    line-height: 1.5em!important;
+		}
+		h1,h2,h3,h4,h5,h6 {
+		    color: #DDD;
+		    line-height: 36px;
+		}
+		h1 {
+		    margin-bottom: 18px;
+		    font-size: 30px;
+		}
+		h2 {
+		    font-size: 24px;
+		}
+		h3 {
+		    font-size: 18px;
+		}
+		h4 {
+		    font-size: 16px;
+		}
+		h5 {
+		    font-size: 14px;
+		}
+		h6 {
+		    font-size: 13px;
+		}
+		hr {
+		    margin: 0 0 19px;
+		    border: 0;
+		    border-bottom: 1px solid #ccc;
+		}
+		blockquote {
+			margin-left: 30px;
+		    padding: 13px 13px 21px 15px;
+		    margin-bottom: 18px;
+		    font-family:georgia,serif;
+		    font-style: italic;
+		}
+		blockquote:before {
+		    content:"\201C";
+		    font-size:40px;
+		    margin-left:-20px;
+		    font-family:georgia,serif;
+		    color:#eee;
+		    margin-top: -12px;
+		    position: absolute;
+		}
+		blockquote p {
+		    font-size: 14px;
+		    font-weight: 300;
+		    line-height: 18px;
+		    margin-bottom: 0;
+		    font-style: italic;
+		}
+		sup {
+		    font-size: 0.83em;
+		    vertical-align: super;
+		    line-height: 0;
+		}
+		* {
+			-webkit-print-color-adjust: exact;
+		}
+		//********END MD
 		min-height: 160px;
 		color: #FFF;
 		font-size: 2em;
@@ -222,6 +314,9 @@ li{
 			background-color: #FFF;
 			margin: 30px;
 			.box-shadow;
+			a{
+				color: #000!important;
+			}
 			p{
 				overflow: hidden;
 				position: relative;
@@ -235,7 +330,7 @@ li{
 			}
 			h3{
 				font-size: 25px;
-				margin: 10px 20px;
+				margin: 3px 20px;
 			}
 			.post-info{
 				font-size: 12px;
@@ -513,6 +608,7 @@ li{
 	}
 }
 
-} 
+}
+
 
 
