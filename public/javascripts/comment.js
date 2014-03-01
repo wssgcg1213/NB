@@ -59,6 +59,7 @@
             li.appendChild(div);
             li.appendChild(p);
             li.appendChild(clear);
+            if(r.content.split("@")[0] == "") li.style.marginLeft = "80px";
             d.getElementsByTagName("ol")[0].appendChild(li);
             Scroller.goTo($(".comment-list")[0].lastElementChild);
             d.getElementsByTagName("form")[0].reset();
@@ -107,7 +108,7 @@
             Scroller.goTo($('#comment'))
         });
         if($(".comment-cell")[i].getElementsByTagName('p')[1].firstChild.nodeValue.split("@")[0] == ""){
-            console.log($(".comment-cell")[i].style.marginLeft = "80px");
+            $(".comment-cell")[i].style.marginLeft = "80px";
         }
     }
 })(document);
