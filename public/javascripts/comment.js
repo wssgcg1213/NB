@@ -106,5 +106,8 @@
             $('textarea')[0].click();
             Scroller.goTo($('#comment'))
         });
+        if($(".comment-cell")[i].getElementsByTagName('p')[1].firstChild.nodeValue.split("@")[0] == ""){
+            console.log($(".comment-cell")[i].style.marginLeft = "80px");
+        }
     }
 })(document);
