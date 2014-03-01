@@ -95,11 +95,16 @@ Post.getOne = function(pid, callback){
 						marked(doc.content, function (err, content){
 							if(err) throw err;
 							doc.content = content;
-                            doc.comments.forEach(function (comment){
+                            doc.comments.forEach(function (comment, i){
                                 marked(comment.content, function (err, content){
                                     if(err) return console.log(err);
                                     comment.content = content;
                                 });
+                                if(comment.url){
+                                    if(comment.url.split("//")[0].toLowerCase() != "http:"){
+                                        doc.comments[i].url = "http://" + doc.comments[i].url;
+                                    };
+                                }
                             });
                             callback(null, doc);
 						});
@@ -245,10 +250,10 @@ Post.saveComment = function (pid, qq, name, url, content, callback){
         return callback("请检查内容!");
     }
     var _qq = qq ? qq : "10000",
-        url = "http://qlogo4.store.qq.com/qzonelogo/" + _qq + "/1/0",
+        _url = "http://qlogo4.store.qq.com/qzonelogo/" + _qq + "/1/0",
         _fullname = "./public/images/head/" + _qq + ".png";
     if(!require('fs').existsSync(_fullname)){
-        require("http").get(url, function (r) {
+        require("http").get(_url, function (r) {
             saveImg(r, _qq);
         });
     };

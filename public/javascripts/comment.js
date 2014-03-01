@@ -36,7 +36,11 @@
                 strong = d.createElement("strong"),
                 span = d.createElement("span"),
                 p = d.createElement("p"),
-                clear = d.createElement("div");
+                clear = d.createElement("div"),
+                a1 = d.createElement("a"),
+                a2 = d.createElement("a");
+            a1.href = r.url;
+            a2.href = r.url;
             li.id = "div-comment";
             li.className = "comment-cell";
             div.className = "comment-author";
@@ -47,8 +51,10 @@
             p.appendChild(d.createTextNode(r.content));
             strong.appendChild(d.createTextNode(r.name));
             span.appendChild(d.createTextNode(r.time.minute));
-            div.appendChild(avatar);
-            div.appendChild(strong);
+            a1.appendChild(avatar);
+            div.appendChild(a1);
+            a2.appendChild(strong);
+            div.appendChild(a2);
             div.appendChild(span);
             li.appendChild(div);
             li.appendChild(p);

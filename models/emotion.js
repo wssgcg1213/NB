@@ -106,6 +106,13 @@ Emotion.getOne = function (eid, callback) {
 					collection.update({'eid': eid}, {$inc: {'pv': 1}}, function (err){  //pv++
 						db.close();
 						if(err) return callback(err);
+                        doc.comments.forEach(function(node, i){
+                            if(node.url){
+                                if(node.url.split("//")[0].toLowerCase() != "http:"){
+                                    doc.comments[i].url = "http://" + doc.comments[i].url;
+                                };
+                            }
+                        });
 						callback(null, doc);
 					});
 				}else{
@@ -142,10 +149,10 @@ Emotion.saveComment = function (eid, qq, name, url, content, callback){
         return callback("请检查内容!");
     }
     var _qq = qq ? qq : "10000",
-        url = "http://qlogo4.store.qq.com/qzonelogo/" + _qq + "/1/0",
+        _url = "http://qlogo4.store.qq.com/qzonelogo/" + _qq + "/1/0",
         _fullname = "./public/images/head/" + _qq + ".png";
     if(!require('fs').existsSync(_fullname)){
-        require("http").get(url, function (r) {
+        require("http").get(_url, function (r) {
             saveImg(r, _qq);
         });
     };

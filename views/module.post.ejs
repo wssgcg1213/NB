@@ -5,10 +5,10 @@
 			<ul class="post-content">
 				<% for(var i = 0; i<posts.length; i++){ %>
 					<li class="post-cell">
-						<a href="post/<%= posts[i].pid %>" rel="点击阅读 <%= posts[i].title %>" title="<%= posts[i].title %>">
+						<a href="post/<%= posts[i].pid %>.html" rel="点击阅读 <%= posts[i].title %>" title="<%= posts[i].title %>">
 							<p><%- posts[i].content %></p>
 						</a>
-						<h3><a href="post/<%= posts[i].pid %>" title="<%= posts[i].title %>"><%= posts[i].titlesub %></a></h3>
+						<h3><a href="post/<%= posts[i].pid %>.html" title="<%= posts[i].title %>"><%= posts[i].titlesub %></a></h3>
 						<div class="post-info">
 							<sapn class="post-date"><%= posts[i].time.day %></sapn>
 							<span class="post-view">点击: <%= posts[i].pv %>次</span>

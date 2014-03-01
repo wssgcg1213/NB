@@ -50,7 +50,7 @@ module.exports = function(nb){
 		});
 	});
 
-	nb.get('/emotion/:eid', function (req, res, next) {
+	nb.get('/emotion/:eid.html', function (req, res, next) {
 		var eid = parseInt(req.params.eid);
 		Emotion.getOne(eid, function (err, emotion) {
 			if (err){
@@ -79,7 +79,7 @@ module.exports = function(nb){
             });
 		});
 	});
-    nb.post('/emotion/:eid', function (req, res, next){
+    nb.post('/emotion/:eid.html', function (req, res, next){
         var eid = parseInt(req.params.eid),
             name = req.body.name,
             qq = req.body.qq ? req.body.qq : 0,
@@ -100,6 +100,9 @@ module.exports = function(nb){
                 }
                 return res.end(JSON.stringify(respond));
             }
+            if(url){
+                if(url.split("//")[0].toLowerCase() != "http:") url = "http://" + url;
+            }
             var respond = {
                 status: 1,
                 content: content,
@@ -113,7 +116,7 @@ module.exports = function(nb){
         });
     });
 
-	nb.get('/post/:pid', function (req, res, next) {
+	nb.get('/post/:pid.html', function (req, res, next) {
 		var pid = parseInt(req.params.pid); 
         Post.getOne(pid, function (err, post) {
         	Link.get(site.indexLinkAmount, function (err, links) {
@@ -138,7 +141,7 @@ module.exports = function(nb){
         	});
 		});
 	});
-    nb.post('/post/:pid', function (req, res, next){
+    nb.post('/post/:pid.html', function (req, res, next){
         var pid = parseInt(req.params.pid),
             name = req.body.name,
             qq = req.body.qq ? req.body.qq : 0,
@@ -158,6 +161,9 @@ module.exports = function(nb){
                     info: err
                 }
                 return res.end(JSON.stringify(respond));
+            }
+            if(url){
+                if(url.split("//")[0].toLowerCase() != "http:") url = "http://" + url;
             }
             var respond = {
                 status: 1,

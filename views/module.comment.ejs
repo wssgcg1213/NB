@@ -27,8 +27,8 @@
                      <% for(var j = 0; j<comments.length; j++){ %>
                      <li class="comment-cell" id="div-comment">
                          <div class="comment-author">
-                             <img src="/images/head/<%= comments[j].qq %>.png" class="avatar">
-                             <strong><%= comments[j].name %></strong> :
+                             <a href="<%= comments[j].url %>" rel="nofollow"><img src="/images/head/<%= comments[j].qq %>.png" class="avatar"></a>
+                             <a href="<%= comments[j].url %>" rel="nofollow"><strong><%= comments[j].name %></strong></a> :
                              <span class="datetime"><%= comments[j].time.minute %></span>
                          </div>
                          <p><%- comments[j].content %></p>
