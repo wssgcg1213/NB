@@ -136,3 +136,23 @@ Scroller.curve = function () {
     this.bezier = bezier;
     return bezier;
 }
+
+/**
+ * 光标定位
+ * @param pos1 int
+ * @param pos2 int
+ */
+function locatePoint(pos1, pos2){
+    var aCtrl = $('textarea')[0];
+    if (aCtrl.setSelectionRange) {
+        setTimeout(function() {
+            aCtrl.setSelectionRange(pos1, pos2);
+            aCtrl.focus();
+        }, 0);
+    }else if (aCtrl.createTextRange) {
+        var textArea=$('textarea')[0];
+        var tempText=textArea.createTextRange();
+        tempText.moveEnd("character",0-tempText.text.length);
+        tempText.select();
+    }
+}

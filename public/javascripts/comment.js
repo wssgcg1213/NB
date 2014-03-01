@@ -92,4 +92,19 @@
     };
     if($("#submit"))
         $("#submit").on('click', replyComment);
+    for(var i = 0, l = $(".comment-cell").length; i < l; i++){
+        $(".comment-cell")[i].on("mouseover",function(){
+            this.getElementsByClassName('at')[0].style.display = 'inline';
+        });
+        $(".comment-cell")[i].on("mouseout",function(){
+            this.getElementsByClassName('at')[0].style.display = 'none';
+        });
+        $(".comment-cell")[i].getElementsByClassName('at')[0].on('click', function(){
+            console.log(this);
+            $('textarea')[0].value = this.firstChild.nodeValue + " " + $('textarea')[0].value;
+            locatePoint(100,100);
+            $('textarea')[0].click();
+            Scroller.goTo($('#comment'))
+        });
+    }
 })(document);
