@@ -7,7 +7,7 @@
 if(document.getElementById("flash")){
     document.getElementById("flash").style.opacity = 0;
 }
-hljs.initHighlightingOnLoad();
+Array.prototype.slice.call(document.getElementById('main').getElementsByTagName("code")).forEach(function(e){hljs.highlightBlock(e)});
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
