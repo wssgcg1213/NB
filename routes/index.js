@@ -13,7 +13,7 @@ var getTime = require('../models/gettime.js');
 
 module.exports = function(nb){
     //主页
-    nb.get('/', function(req, res){
+    nb.get('/', function (req, res){
         Emotion.get(site.indexEmotionAmount, function (err, emotions) {
             if (err) {
                 req.flash('error', "Fetch emotions error!");
